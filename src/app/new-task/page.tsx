@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from 'next/link'
 
 type TaskStatus = "To-do" | "In Progress" | "Completed";
 type TaskPriority = "Low" | "Medium" | "High" ;
@@ -16,14 +17,21 @@ interface Task {
 
 const MyForm = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const title: string | null = searchParams.get('title')
+  const status = searchParams.get('status')
+  const priority = searchParams.get('priority')
+  const description: string | null = searchParams.get('description')
+  const dueDate: string | null = searchParams.get('dueDate')
 
   const [errorClass, setErrorClass] = useState("!hidden");
   const [formData, setFormData] = useState<Task>({
-    title: "",
-    status: "To-do",
-    priority: "Low",
-    description: "",
-    dueDate: ""
+    title: title !== null ? title : "",
+    status: status !== null ? status as TaskStatus: "To-do",
+    priority: priority !== null ? priority as TaskPriority: "Low",
+    description: description !== null ? description : "",
+    dueDate: dueDate !== null ? dueDate : "",
   });
 
   useEffect(() => {
@@ -154,11 +162,12 @@ const MyForm = () => {
         </label>
 
         <button type='submit' className="btn btn-outline mt-8 w-4/5">Submit</button>
+        <Link className="btn btn-outline btn-error mt-2 w-4/5" href="/">Cancel</Link>
       </form>
 
       <div role="alert" className={`alert alert-error absolute top-10 ${errorClass}`}>
         <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>Error! Date should be in the YYYY-MM-DD format and must be at least today.</span>
+        <span>Error! Date should be in the YYYY-MM-DD format and must be at least tomorrow.</span>
       </div>
     </>
   );

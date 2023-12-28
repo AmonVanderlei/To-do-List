@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 type TaskStatus = "To-do" | "In Progress" | "Completed";
 type TaskPriority = "Low" | "Medium" | "High" ;
 
@@ -22,8 +25,52 @@ function bgColor(taskStatus: TaskStatus, taskPriority: TaskPriority): string {
 }
 
 function Task(obj: Task) {
+  const router = useRouter();
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
+
   const formatedDate = obj.dueDate.toLocaleDateString();
   const color = bgColor(obj.status, obj.priority)
+
+  useEffect(() => {
+    let storedTasks: string | null = localStorage.getItem('tasks');
+    
+    if (storedTasks != null) {
+      setTasks(JSON.parse(storedTasks));
+      setFilteredTasks(JSON.parse(storedTasks));
+    }
+  }, []);
+
+  function deleteTask(deletedTask: Task) {
+    const newTasks: Task[] = tasks.filter((task) =>
+      task.title !== deletedTask.title && task.description !== deletedTask.description
+    );
+
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
+  }
+
+  const handleModify: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    const { value } = e.currentTarget as HTMLButtonElement;
+    const modifiedTask: Task = JSON.parse(value);
+    const formatedDate: string = modifiedTask.dueDate.toString().split('T')[0]
+  
+    // deleteTask(modifiedTask);
+  
+    const queryString = `title=${modifiedTask.title}&status=${modifiedTask.status}
+    &priority=${modifiedTask.priority}&description=${modifiedTask.description}&dueDate=${formatedDate}`
+  
+    router.push(`/new-task?${queryString}`);
+  };
+  
+
+  const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    const { value } = e.currentTarget as HTMLButtonElement;
+    const deletedTask: Task = JSON.parse(value);
+    
+    deleteTask(deletedTask)
+
+    window.location.reload();
+  };
   
   return (
     <>
@@ -38,8 +85,8 @@ function Task(obj: Task) {
           <div className="card-actions justify-between">
             <p className='m-auto m-w-1/2'><b>Due Date:</b> {formatedDate}</p>
             <div className="card-actions justify-evenly">
-              <button className="btn">Modify</button>
-              <button className="btn">Delete</button>
+              <button value={JSON.stringify(obj)} className="btn" onClick={handleModify}>Modify</button>
+              <button value={JSON.stringify(obj)} className="btn" onClick={handleDelete}>Delete</button>
               <button className="btn">Done</button>
             </div>
           </div>
