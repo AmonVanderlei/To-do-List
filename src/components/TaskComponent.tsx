@@ -18,12 +18,16 @@ function bgColor(taskStatus: TaskStatus, taskPriority: TaskPriority): string {
 function Task(obj: Task) {
   const color = bgColor(obj.status, obj.priority);
 
+  const descriptionLines = obj.description.split("\n").map((line, index) => {
+    return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
+  });
+  
   return (
     <>
       <div className={`card w-full ${color} text-primary-content mt-4`}>
         <div className="card-body !px-6">
           <h2 className="card-title">{obj.title}</h2>
-          <p>{obj.description}</p>
+          <div>{descriptionLines}</div>
           <div className="card-actions justify-between">
             <p className="m-auto">
               <b>Status:</b> {obj.status}

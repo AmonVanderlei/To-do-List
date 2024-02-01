@@ -10,7 +10,11 @@ function ModifyButton(obj: Task) {
 
     deleteTask(modifiedTask);
 
-    const queryString = `title=${modifiedTask.title}&status=${modifiedTask.status}&priority=${modifiedTask.priority}&description=${modifiedTask.description}&cancel=false`;
+    const queryString = `title=${modifiedTask.title}&status=${
+      modifiedTask.status
+    }&priority=${modifiedTask.priority}&description=${encodeURIComponent(
+      modifiedTask.description
+    )}&cancel=false`;
 
     router.push(`/new-task?${queryString}`);
   };

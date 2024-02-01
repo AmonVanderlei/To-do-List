@@ -24,7 +24,9 @@ const MyForm = () => {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -102,12 +104,11 @@ const MyForm = () => {
           <div className="label">
             <span className="label-text">Description</span>
           </div>
-          <input
-            type="text"
+          <textarea
             name="description"
             value={formData.description}
             placeholder="Type here"
-            className="input input-bordered w-full h-8"
+            className="input input-bordered w-full !h-36"
             onChange={handleChange}
           />
         </label>
