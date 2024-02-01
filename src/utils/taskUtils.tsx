@@ -17,3 +17,35 @@ export function deleteTask(deletedTask: Task) {
 
   localStorage.setItem("tasks", JSON.stringify(newTasks));
 }
+
+export function sortTasks(tasks: Task[]): Task[] {
+  let highPriorityTasks: Task[] = [];
+  let mediumPriorityTasks: Task[] = [];
+  let lowPriorityTasks: Task[] = [];
+  let completedTasks: Task[] = [];
+
+  tasks.forEach((task) => {
+    if (task.status === "Completed") {
+      completedTasks.push(task);
+    } else {
+      switch (task.priority) {
+        case "High":
+          highPriorityTasks.push(task);
+          break;
+        case "Medium":
+          mediumPriorityTasks.push(task);
+          break;
+        default:
+          lowPriorityTasks.push(task);
+          break;
+      }
+    }
+  });
+
+  return [
+    ...highPriorityTasks,
+    ...mediumPriorityTasks,
+    ...lowPriorityTasks,
+    ...completedTasks,
+  ];
+}
