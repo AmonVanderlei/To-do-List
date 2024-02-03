@@ -23,6 +23,7 @@ export default function RootLayout({
           rel="stylesheet"
           type="text/css"
         />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className}`}>
         <div className="navbar bg-base-100 flex-wrap">
