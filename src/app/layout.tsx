@@ -18,6 +18,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>Habit Maker</title>
+        <meta name="title" content="Habit Maker" />
+        <meta
+          name="description"
+          content="Write your goals to create new habits."
+        />
+        <meta name="theme-color" content="#1e1e32" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Amon Vanderlei" />
         <link
           href="https://cdn.jsdelivr.net/npm/daisyui@4.4.24/dist/full.min.css"
           rel="stylesheet"
