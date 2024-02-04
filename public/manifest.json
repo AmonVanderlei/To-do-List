@@ -1,7 +1,7 @@
 {
     "name": "Habit Maker",
     "short_name": "Habit Maker",
-    "description": "Write your goals to create new habits",
+    "description": "Write your goals to create new habits.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

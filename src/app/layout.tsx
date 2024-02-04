@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "To-do List",
-  description: "Organize your tasks with the to-do list.",
+  title: "Habit Maker",
+  description: "Write your goals to create new habits.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
         <div className="navbar bg-base-100 flex-wrap">
           <div className="flex-1 justify-center">
             <Link className="btn btn-ghost !text-2xl" href="/">
-              To-do List
+              Habit Maker
             </Link>
           </div>
         </div>
