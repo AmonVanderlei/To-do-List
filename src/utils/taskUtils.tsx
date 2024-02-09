@@ -49,3 +49,22 @@ export function sortTasks(tasks: Task[]): Task[] {
     ...completedTasks,
   ];
 }
+
+export function updateTasks(tasks: Task[]) {
+  const currentDate: string = Date().split(":")[0].slice(0, -3);
+  const updateDate: string | null = localStorage.getItem("updateDate");
+
+  if (updateDate) {
+    if (currentDate !== updateDate) {
+      tasks.forEach((task) => {
+        if (task.status === "Completed") {
+          task.status = "To-do";
+        }
+      });
+    }
+  }
+
+  localStorage.setItem("updateDate", currentDate);
+
+  return tasks;
+}

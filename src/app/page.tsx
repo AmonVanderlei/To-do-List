@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Task from "@/components/TaskComponent";
-import { sortTasks } from "@/utils/taskUtils";
+import { sortTasks, updateTasks } from "@/utils/taskUtils";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -15,10 +15,12 @@ export default function Home() {
 
     if (storedTasks != null) {
       const sortedTasks: Task[] = sortTasks(JSON.parse(storedTasks));
-      setTasks(sortedTasks);
-      setFilteredTasks(sortedTasks);
+      const updatedTasks = updateTasks(sortedTasks);
 
-      localStorage.setItem("tasks", JSON.stringify(sortedTasks));
+      setTasks(updatedTasks);
+      setFilteredTasks(updatedTasks);
+
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     }
   }, []);
 
