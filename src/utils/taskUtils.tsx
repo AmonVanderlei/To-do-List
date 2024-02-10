@@ -58,7 +58,35 @@ export function updateTasks(tasks: Task[]) {
     if (currentDate !== updateDate) {
       tasks.forEach((task) => {
         if (task.status === "Completed") {
-          task.status = "To-do";
+          const curDate = new Date(currentDate);
+          const lastDate = new Date(updateDate);
+          const differenceInMs = lastDate.getTime() - curDate.getTime();
+          const millisecondsInWeek = 7 * 24 * 60 * 60 * 1000;
+          const monthChanged =
+            currentDate.split(" ")[1] !== updateDate.split(" ")[1];
+          const yearChanged =
+            currentDate.split(" ")[3] !== updateDate.split(" ")[3];
+
+          switch (task.update) {
+            case "Daily":
+              task.status = "To-do";
+              break;
+            case "Weekly":
+              if (differenceInMs > millisecondsInWeek) {
+                task.status = "To-do";
+              }
+              break;
+            case "Monthly":
+              if (monthChanged || yearChanged) {
+                task.status = "To-do";
+              }
+              break;
+            default:
+              if (yearChanged) {
+                task.status = "To-do";
+              }
+              break;
+          }
         }
       });
     }

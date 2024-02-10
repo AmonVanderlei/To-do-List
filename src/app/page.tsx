@@ -67,10 +67,11 @@ export default function Home() {
         <div className="w-full pt-4 px-4">
           {filteredTasks.map((task) => (
             <Task
-              key={task.description}
+              key={task.description + task.title}
               title={task.title}
               status={task.status}
               priority={task.priority}
+              update={task.update}
               description={task.description}
             />
           ))}

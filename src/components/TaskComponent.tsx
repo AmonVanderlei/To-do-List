@@ -67,6 +67,9 @@ function Task(obj: Task) {
             <p className="m-auto">
               <b>Priority:</b> {obj.priority}
             </p>
+            <p className="m-auto">
+              <b>Update:</b> {obj.update}
+            </p>
           </div>
 
           <div className="card-actions justify-between">
@@ -76,6 +79,7 @@ function Task(obj: Task) {
                 title={obj.title}
                 status={obj.status}
                 priority={obj.priority}
+                update={obj.update}
                 description={obj.description}
               />
               <DeleteButton
@@ -83,6 +87,7 @@ function Task(obj: Task) {
                 title={obj.title}
                 status={obj.status}
                 priority={obj.priority}
+                update={obj.update}
                 description={obj.description}
               />
               <DoneButton
@@ -90,6 +95,7 @@ function Task(obj: Task) {
                 title={obj.title}
                 status={obj.status}
                 priority={obj.priority}
+                update={obj.update}
                 description={obj.description}
               />
             </div>

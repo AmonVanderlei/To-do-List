@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Task, TaskStatus, TaskPriority } from "../../types/Task";
+import { Task, TaskStatus, TaskPriority, TaskUpdate } from "../../types/Task";
 
 const MyForm = () => {
   const router = useRouter();
@@ -12,6 +12,7 @@ const MyForm = () => {
   const title: string | null = searchParams.get("title");
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
+  const update = searchParams.get("update");
   const description: string | null = searchParams.get("description");
   const cancel: string =
     searchParams.get("cancel") === "false" ? "!hidden" : "";
@@ -20,6 +21,7 @@ const MyForm = () => {
     title: title !== null ? title : "",
     status: status !== null ? (status as TaskStatus) : "To-do",
     priority: priority !== null ? (priority as TaskPriority) : "Low",
+    update: update !== null ? (update as TaskUpdate) : "Daily",
     description: description !== null ? description : "",
   });
 
@@ -97,6 +99,23 @@ const MyForm = () => {
             <option value="Low">Low</option>
             <option value="Medium">Medium</option>
             <option value="High">High</option>
+          </select>
+        </label>
+
+        <label className="form-control w-4/5">
+          <div className="label">
+            <span className="label-text">Update</span>
+          </div>
+          <select
+            name="update"
+            value={formData.update}
+            className="select select-bordered"
+            onChange={handleChange}
+          >
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
           </select>
         </label>
 

@@ -12,9 +12,9 @@ function ModifyButton(obj: Task) {
 
     const queryString = `title=${modifiedTask.title}&status=${
       modifiedTask.status
-    }&priority=${modifiedTask.priority}&description=${encodeURIComponent(
-      modifiedTask.description
-    )}&cancel=false`;
+    }&priority=${modifiedTask.priority}&update=${
+      modifiedTask.update
+    }&description=${encodeURIComponent(modifiedTask.description)}&cancel=false`;
 
     router.push(`/new-task?${queryString}`);
   };
