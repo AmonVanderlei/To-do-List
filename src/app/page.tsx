@@ -16,13 +16,13 @@ export default function Home() {
     let storedTasks: string | null = localStorage.getItem("tasks");
 
     if (storedTasks != null) {
-      const sortedTasks: Task[] = sortTasks(JSON.parse(storedTasks));
-      const updatedTasks = updateTasks(sortedTasks);
+      const updatedTasks = updateTasks(JSON.parse(storedTasks));
+      const sortedTasks: Task[] = sortTasks(updatedTasks);
 
-      setTasks(updatedTasks);
-      setFilteredTasks(updatedTasks);
+      setTasks(sortedTasks);
+      setFilteredTasks(sortedTasks);
 
-      localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+      localStorage.setItem("tasks", JSON.stringify(sortedTasks));
     }
   }, []);
 
