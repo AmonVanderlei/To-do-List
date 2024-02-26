@@ -95,6 +95,8 @@ export default function Home() {
                     status={task.status}
                     priority={task.priority}
                     update={task.update}
+                    inicialDate={task.inicialDate}
+                    days={task.days}
                     description={task.description}
                   />
                 );
@@ -108,6 +110,8 @@ export default function Home() {
                     status={task.status}
                     priority={task.priority}
                     update={task.update}
+                    inicialDate={task.inicialDate}
+                    days={task.days}
                     description={task.description}
                   />
                 );

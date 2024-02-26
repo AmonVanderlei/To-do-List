@@ -7,5 +7,7 @@ export interface Task {
   status: TaskStatus;
   priority: TaskPriority;
   update: TaskUpdate;
+  inicialDate: string;
+  days: string[];
   description: string;
 }

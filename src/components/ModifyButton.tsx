@@ -14,6 +14,8 @@ function ModifyButton(obj: Task) {
       modifiedTask.status
     }&priority=${modifiedTask.priority}&update=${
       modifiedTask.update
+    }&inicialDate=${modifiedTask.inicialDate}&days=${
+      modifiedTask.days
     }&description=${encodeURIComponent(modifiedTask.description)}&cancel=false`;
 
     router.push(`/new-task?${queryString}`);

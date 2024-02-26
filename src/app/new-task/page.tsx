@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Task, TaskStatus, TaskPriority, TaskUpdate } from "../../types/Task";
+import Days from "@/components/new-task/Days";
 
 const MyForm = () => {
   const router = useRouter();
@@ -13,6 +14,8 @@ const MyForm = () => {
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
   const update = searchParams.get("update");
+  const inicialDate = searchParams.get("inicialDate");
+  const days = searchParams.get("days");
   const description: string | null = searchParams.get("description");
   const cancel: string =
     searchParams.get("cancel") === "false" ? "!hidden" : "";
@@ -22,6 +25,8 @@ const MyForm = () => {
     status: status !== null ? (status as TaskStatus) : "To-do",
     priority: priority !== null ? (priority as TaskPriority) : "Low",
     update: update !== null ? (update as TaskUpdate) : "Daily",
+    inicialDate: inicialDate !== null ? inicialDate : "",
+    days: days !== null && days !== undefined ? days.split(",") : [],
     description: description !== null ? description : "",
   });
 
@@ -117,6 +122,30 @@ const MyForm = () => {
             <option value="Monthly">Monthly</option>
             <option value="Yearly">Yearly</option>
           </select>
+        </label>
+
+        <label className="form-control w-4/5">
+          <div className="label">
+            <span className="label-text">Inicial date</span>
+          </div>
+          <select
+            name="update"
+            value={formData.update}
+            className="select select-bordered"
+            onChange={handleChange}
+          >
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Yearly">Yearly</option>
+          </select>
+        </label>
+
+        <label className="form-control w-4/5">
+          <div className="label">
+            <span className="label-text">Days</span>
+          </div>
+          <Days setFormData={setFormData} days={formData.days} />
         </label>
 
         <label className="flex flex-col w-4/5">

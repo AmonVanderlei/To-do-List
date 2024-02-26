@@ -80,6 +80,8 @@ function Task(obj: Task) {
                 status={obj.status}
                 priority={obj.priority}
                 update={obj.update}
+                inicialDate={obj.inicialDate}
+                days={obj.days}
                 description={obj.description}
               />
               <DeleteButton
@@ -88,6 +90,8 @@ function Task(obj: Task) {
                 status={obj.status}
                 priority={obj.priority}
                 update={obj.update}
+                inicialDate={obj.inicialDate}
+                days={obj.days}
                 description={obj.description}
               />
               <DoneButton
@@ -96,6 +100,8 @@ function Task(obj: Task) {
                 status={obj.status}
                 priority={obj.priority}
                 update={obj.update}
+                inicialDate={obj.inicialDate}
+                days={obj.days}
                 description={obj.description}
               />
             </div>
