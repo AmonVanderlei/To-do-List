@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Task, TaskStatus, TaskPriority, TaskUpdate } from "../../types/Task";
+import { Task, TaskStatus, TaskPriority } from "../../types/Task";
 import Days from "@/components/new-task/Days";
 
 const MyForm = () => {
@@ -13,7 +13,6 @@ const MyForm = () => {
   const title: string | null = searchParams.get("title");
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
-  const update = searchParams.get("update");
   const inicialDate = searchParams.get("inicialDate");
   const days = searchParams.get("days");
   const description: string | null = searchParams.get("description");
@@ -24,7 +23,6 @@ const MyForm = () => {
     title: title !== null ? title : "",
     status: status !== null ? (status as TaskStatus) : "To-do",
     priority: priority !== null ? (priority as TaskPriority) : "Low",
-    update: update !== null ? (update as TaskUpdate) : "Daily",
     inicialDate: inicialDate !== null ? inicialDate : "",
     days: days !== null && days !== undefined ? days.split(",") : [],
     description: description !== null ? description : "",
@@ -109,36 +107,16 @@ const MyForm = () => {
 
         <label className="form-control w-4/5">
           <div className="label">
-            <span className="label-text">Update</span>
-          </div>
-          <select
-            name="update"
-            value={formData.update}
-            className="select select-bordered"
-            onChange={handleChange}
-          >
-            <option value="Daily">Daily</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Yearly">Yearly</option>
-          </select>
-        </label>
-
-        <label className="form-control w-4/5">
-          <div className="label">
             <span className="label-text">Inicial date</span>
           </div>
-          <select
-            name="update"
-            value={formData.update}
-            className="select select-bordered"
+          <input
+            type="text"
+            name="inicialDate"
+            value={formData.inicialDate}
+            placeholder="dd/mm/yyyy"
+            className="input input-bordered w-full"
             onChange={handleChange}
-          >
-            <option value="Daily">Daily</option>
-            <option value="Weekly">Weekly</option>
-            <option value="Monthly">Monthly</option>
-            <option value="Yearly">Yearly</option>
-          </select>
+          />
         </label>
 
         <label className="form-control w-4/5">
