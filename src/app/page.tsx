@@ -67,28 +67,20 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-wrap justify-evenly mt-1">
-          <label className="label cursor-pointer flex-col">
-            <input
-              type="checkbox"
-              className="toggle toggle-success"
-              checked={completed}
-              onClick={handleRenderType}
-            />
-            <span className={clsx("label-text", { "text-success": completed })}>
-              To-do
-            </span>
+        <div className="flex flex-wrap justify-evenly mt-2">
+          <label className="swap border rounded h-10 px-2">
+            <input type="checkbox" onClick={handleRenderType} />
+            <div className="swap-on">Tasks To Do</div>
+            <div className="swap-off">Future Tasks</div>
           </label>
-          <label className="label cursor-pointer flex-col">
-            <input
-              type="checkbox"
-              className="toggle toggle-success"
-              checked={completed}
-              onClick={handleClick}
-            />
-            <span className={clsx("label-text", { "text-success": completed })}>
-              Completed
-            </span>
+          <label
+            className={clsx("swap border rounded h-10 px-2", {
+              "text-success": completed,
+            })}
+          >
+            <input type="checkbox" onClick={handleClick} />
+            <div className="swap-on">Completed</div>
+            <div className="swap-off">Completed</div>
           </label>
         </div>
 
