@@ -1,6 +1,39 @@
 import { Task } from "../types/Task";
 import TaskComponent from "@/components/TaskComponent";
 
+export function bgColor(task: Task): string {
+  const currentDate = new Date();
+  const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
+
+  if (currentDate > taskDate) {
+    if (task.status === "Completed") {
+      return "bg-green-600";
+    } else {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600";
+        case "Medium":
+          return "bg-yellow-500";
+        case "Low":
+          return "bg-primary";
+      }
+    }
+  } else {
+    if (task.status === "Completed") {
+      return "bg-green-600 bg-opacity-65";
+    } else {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600 bg-opacity-65";
+        case "Medium":
+          return "bg-yellow-500 bg-opacity-65";
+        case "Low":
+          return "bg-primary bg-opacity-65";
+      }
+    }
+  }
+}
+
 export function deleteTask(deletedTask: Task) {
   const tasksInLocalStorage: string | null = localStorage.getItem("tasks");
   let storedTasks: string =

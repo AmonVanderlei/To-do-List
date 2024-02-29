@@ -4,22 +4,11 @@ import { Task, TaskStatus, TaskPriority } from "../types/Task";
 import DeleteButton from "./DeleteButton";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
-
-function bgColor(taskStatus: TaskStatus, taskPriority: TaskPriority): string {
-  if (taskStatus === "Completed") {
-    return "bg-green-600";
-  }
-  if (taskPriority === "Low") {
-    return "bg-primary";
-  } else if (taskPriority === "Medium") {
-    return "bg-yellow-500";
-  }
-  return "bg-red-600";
-}
+import { bgColor } from "@/utils/taskUtils";
 
 function Task(obj: Task) {
   const [readMore, setReadMore] = useState<boolean>(false);
-  const color = bgColor(obj.status, obj.priority);
+  const color = bgColor(obj);
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
@@ -66,6 +55,9 @@ function Task(obj: Task) {
             </p>
             <p className="m-auto">
               <b>Priority:</b> {obj.priority}
+            </p>
+            <p className="m-auto">
+              <b>Inicial Date:</b> {obj.inicialDate}
             </p>
           </div>
 
