@@ -1,4 +1,5 @@
 import { Task } from "../types/Task";
+import TaskComponent from "@/components/TaskComponent";
 
 export function deleteTask(deletedTask: Task) {
   const tasksInLocalStorage: string | null = localStorage.getItem("tasks");
@@ -48,4 +49,58 @@ export function sortTasks(tasks: Task[]): Task[] {
     ...lowPriorityTasks,
     ...completedTasks,
   ];
+}
+
+function _renderType(task: Task, renderType: "To-do" | "Future") {
+  const currentDate = new Date();
+  const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
+
+  switch (renderType) {
+    case "To-do":
+      if (taskDate <= currentDate) {
+        return (
+          <TaskComponent
+            key={task.description + task.title}
+            title={task.title}
+            status={task.status}
+            priority={task.priority}
+            inicialDate={task.inicialDate}
+            days={task.days}
+            description={task.description}
+          />
+        );
+      }
+      break;
+    default:
+      if (taskDate > currentDate) {
+        return (
+          <TaskComponent
+            key={task.description + task.title}
+            title={task.title}
+            status={task.status}
+            priority={task.priority}
+            inicialDate={task.inicialDate}
+            days={task.days}
+            description={task.description}
+          />
+        );
+      }
+      break;
+  }
+}
+
+export function renderTask(
+  task: Task,
+  completed: boolean,
+  renderType: "To-do" | "Future"
+) {
+  if (completed) {
+    if (task.status === "Completed") {
+      return _renderType(task, renderType);
+    }
+  } else {
+    if (task.status !== "Completed") {
+      return _renderType(task, renderType);
+    }
+  }
 }

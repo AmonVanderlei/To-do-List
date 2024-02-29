@@ -4,13 +4,14 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Task from "@/components/TaskComponent";
-import { sortTasks } from "@/utils/taskUtils";
+import { sortTasks, renderTask } from "@/utils/taskUtils";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [completed, setCompleted] = useState<boolean>(false);
+  const [renderType, setRenderType] = useState<"To-do" | "Future">("To-do");
 
   useEffect(() => {
     let storedTasks: string | null = localStorage.getItem("tasks");
@@ -39,7 +40,15 @@ export default function Home() {
   };
 
   const handleClick = () => {
-    setIsChecked(!isChecked);
+    setCompleted(!completed);
+  };
+
+  const handleRenderType = () => {
+    if (renderType === "To-do") {
+      setRenderType("Future");
+    } else {
+      setRenderType("To-do");
+    }
   };
 
   return (
@@ -47,29 +56,43 @@ export default function Home() {
       <div className="flex flex-col	w-full">
         <h1 className="text-3xl mt-4 px-4">Tasks</h1>
 
-        <div className="flex justify-evenly flex-wrap mt-4">
+        <div className="flex justify-center mt-4">
           <input
             type="text"
             name="search"
             value={searchValue}
             placeholder="Search"
-            className="input input-bordered w-3/5 min-w-32"
+            className="input input-bordered w-5/6 min-w-32"
             onChange={handleChange}
           />
+        </div>
+
+        <div className="flex flex-wrap justify-evenly mt-1">
           <label className="label cursor-pointer flex-col">
             <input
               type="checkbox"
               className="toggle toggle-success"
-              checked={isChecked}
+              checked={completed}
+              onClick={handleRenderType}
+            />
+            <span className={clsx("label-text", { "text-success": completed })}>
+              To-do
+            </span>
+          </label>
+          <label className="label cursor-pointer flex-col">
+            <input
+              type="checkbox"
+              className="toggle toggle-success"
+              checked={completed}
               onClick={handleClick}
             />
-            <span className={clsx("label-text", { "text-success": isChecked })}>
+            <span className={clsx("label-text", { "text-success": completed })}>
               Completed
             </span>
           </label>
         </div>
 
-        <Link className="btn btn-ghost mt-4" href="/new-task">
+        <Link className="btn btn-ghost" href="/new-task">
           <svg
             className="white-svg"
             width="24"
@@ -84,37 +107,7 @@ export default function Home() {
         </Link>
 
         <div className="w-full pt-4 px-4">
-          {filteredTasks.map((task) => {
-            if (isChecked) {
-              if (task.status === "Completed") {
-                return (
-                  <Task
-                    key={task.description + task.title}
-                    title={task.title}
-                    status={task.status}
-                    priority={task.priority}
-                    inicialDate={task.inicialDate}
-                    days={task.days}
-                    description={task.description}
-                  />
-                );
-              }
-            } else {
-              if (task.status !== "Completed") {
-                return (
-                  <Task
-                    key={task.description + task.title}
-                    title={task.title}
-                    status={task.status}
-                    priority={task.priority}
-                    inicialDate={task.inicialDate}
-                    days={task.days}
-                    description={task.description}
-                  />
-                );
-              }
-            }
-          })}
+          {filteredTasks.map((task) => renderTask(task, completed, renderType))}
         </div>
       </div>
     </main>
