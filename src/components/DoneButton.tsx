@@ -7,7 +7,12 @@ function DoneButton(obj: Task) {
     const modifiedTask: Task = JSON.parse(value);
 
     deleteTask(modifiedTask);
-    modifiedTask.status = "Completed";
+
+    if (obj.status === "Completed") {
+      modifiedTask.status = "To-do";
+    } else {
+      modifiedTask.status = "Completed";
+    }
 
     const storedTasks = localStorage.getItem("tasks");
 
@@ -24,7 +29,7 @@ function DoneButton(obj: Task) {
 
   return (
     <button value={JSON.stringify(obj)} className="btn" onClick={handleDone}>
-      Done
+      {obj.status === "Completed" ? "Undo" : "Done"}
     </button>
   );
 }
