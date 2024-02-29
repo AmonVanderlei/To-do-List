@@ -4,7 +4,39 @@ import { Task, TaskStatus, TaskPriority } from "../types/Task";
 import DeleteButton from "./DeleteButton";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
-import { bgColor } from "@/utils/taskUtils";
+
+function bgColor(task: Task): string {
+  const currentDate = new Date();
+  const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
+
+  if (currentDate >= taskDate) {
+    if (task.status === "Completed") {
+      return "bg-green-600";
+    } else {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600";
+        case "Medium":
+          return "bg-yellow-500";
+        case "Low":
+          return "bg-primary";
+      }
+    }
+  } else {
+    if (task.status === "Completed") {
+      return "bg-green-600 bg-opacity-50";
+    } else {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600 bg-opacity-50";
+        case "Medium":
+          return "bg-yellow-500 bg-opacity-50";
+        case "Low":
+          return "bg-slate-700";
+      }
+    }
+  }
+}
 
 function Task(obj: Task) {
   const [readMore, setReadMore] = useState<boolean>(false);
