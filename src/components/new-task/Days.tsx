@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Task } from "@/types/Task";
 
@@ -11,6 +11,14 @@ function Days({ setFormData, days }: DaysProps) {
   const [taskDays, setTaskDays] = useState<string[]>(days || []);
   const [allChecked, setAllChecked] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (taskDays.length < 7) {
+      setAllChecked(false);
+    } else {
+      setAllChecked(true);
+    }
+  }, [taskDays]);
+
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const button = e.target as HTMLButtonElement;
@@ -19,7 +27,7 @@ function Days({ setFormData, days }: DaysProps) {
     if (!taskDays.includes(day)) {
       setTaskDays([...taskDays, day]);
     } else {
-      setTaskDays(taskDays.filter((day) => day !== day));
+      setTaskDays(taskDays.filter((dayToFilter) => dayToFilter !== day));
     }
 
     setFormData((prevData: Task) => ({
