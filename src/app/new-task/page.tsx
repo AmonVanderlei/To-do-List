@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import "@natscale/react-calendar/dist/main.css";
+import { Calendar } from "@natscale/react-calendar";
+import React, { useState, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Task, TaskStatus, TaskPriority } from "../../types/Task";
 import Days from "@/components/new-task/Days";
+import { Value } from "@natscale/react-calendar/dist/utils/types";
 
 const MyForm = () => {
   const router = useRouter();
@@ -27,6 +30,35 @@ const MyForm = () => {
     days: days !== null && days !== undefined ? days.split(",") : [],
     description: description !== null ? description : "",
   });
+  const [calendarValue, setCalendarValue] = useState<Value | undefined>(
+    inicialDate !== null ? toDate(inicialDate) : undefined
+  );
+
+  function toDate(dateString: string): Date {
+    const [day, month, year] = dateString.split("/").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date;
+  }
+
+  const onCalendarChange = useCallback(
+    (value: any) => {
+      setCalendarValue(value);
+
+      const date = new Date(value);
+
+      const day = date.getUTCDate().toString().padStart(2, "0");
+      const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+      const year = date.getUTCFullYear().toString();
+
+      const formattedDate = `${day}/${month}/${year}`;
+
+      setFormData((prevData) => ({
+        ...prevData,
+        inicialDate: formattedDate,
+      }));
+    },
+    [setCalendarValue]
+  );
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -109,13 +141,11 @@ const MyForm = () => {
           <div className="label">
             <span className="label-text">Inicial date</span>
           </div>
-          <input
-            type="text"
-            name="inicialDate"
-            value={formData.inicialDate}
-            placeholder="dd/mm/yyyy"
-            className="input input-bordered w-full"
-            onChange={handleChange}
+          <Calendar
+            value={calendarValue}
+            onChange={onCalendarChange}
+            startOfWeek={0}
+            useDarkMode
           />
         </label>
 
