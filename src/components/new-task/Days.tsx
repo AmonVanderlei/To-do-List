@@ -9,6 +9,7 @@ interface DaysProps {
 
 function Days({ setFormData, days }: DaysProps) {
   const [taskDays, setTaskDays] = useState<string[]>(days || []);
+  const [allChecked, setAllChecked] = useState<boolean>(false);
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -27,6 +28,46 @@ function Days({ setFormData, days }: DaysProps) {
         ? [...prevData.days.filter((selectedDay) => selectedDay !== day)]
         : [...prevData.days, day],
     }));
+  };
+
+  const handleMarkAll: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+
+    if (allChecked) {
+      setTaskDays([]);
+
+      setFormData((prevData: Task) => ({
+        ...prevData,
+        days: [],
+      }));
+
+      setAllChecked(false);
+    } else {
+      setTaskDays([
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ]);
+
+      setFormData((prevData: Task) => ({
+        ...prevData,
+        days: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+      }));
+
+      setAllChecked(true);
+    }
   };
 
   return (
@@ -103,6 +144,9 @@ function Days({ setFormData, days }: DaysProps) {
           Sat
         </button>
       </div>
+      <button className="text-gray-400 underline" onClick={handleMarkAll}>
+        {allChecked ? "Remove all" : "Check all"}
+      </button>
     </div>
   );
 }
