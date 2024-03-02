@@ -53,11 +53,25 @@ export function sortTasks(tasks: Task[]): Task[] {
 
 function _renderType(task: Task, renderType: "To-do" | "Future") {
   const currentDate = new Date();
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = daysOfWeek[currentDate.getDay()];
+
   const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
 
   switch (renderType) {
     case "To-do":
-      if (taskDate <= currentDate) {
+      if (
+        taskDate.getTime() <= currentDate.getTime() &&
+        task.days.includes(today)
+      ) {
         return (
           <TaskComponent
             key={task.description + task.title}
@@ -72,7 +86,10 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
       }
       break;
     default:
-      if (taskDate > currentDate) {
+      if (
+        taskDate.getTime() > currentDate.getTime() ||
+        !task.days.includes(today)
+      ) {
         return (
           <TaskComponent
             key={task.description + task.title}

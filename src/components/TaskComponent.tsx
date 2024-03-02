@@ -7,9 +7,23 @@ import DoneButton from "./DoneButton";
 
 function bgColor(task: Task): string {
   const currentDate = new Date();
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = daysOfWeek[currentDate.getDay()];
+
   const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
 
-  if (currentDate >= taskDate) {
+  if (
+    taskDate.getTime() <= currentDate.getTime() &&
+    task.days.includes(today)
+  ) {
     if (task.status === "Completed") {
       return "bg-green-600";
     } else {
