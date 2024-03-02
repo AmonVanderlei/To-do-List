@@ -43,7 +43,7 @@ export default function RootLayout({
           </div>
         </div>
 
-        <div className="min-h-screen">{children}</div>
+        <div className="min-h-screen pb-8">{children}</div>
       </body>
     </html>
   );
