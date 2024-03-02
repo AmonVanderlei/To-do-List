@@ -31,7 +31,7 @@ const MyForm = () => {
     description: description !== null ? description : "",
   });
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
-    inicialDate !== null ? toDate(inicialDate) : undefined
+    inicialDate !== null ? toDate(inicialDate) : new Date()
   );
 
   function toDate(dateString: string): Date {
@@ -141,12 +141,14 @@ const MyForm = () => {
           <div className="label">
             <span className="label-text">Inicial date</span>
           </div>
-          <Calendar
-            value={calendarValue}
-            onChange={onCalendarChange}
-            startOfWeek={0}
-            useDarkMode
-          />
+          <div className="flex justify-center w-full">
+            <Calendar
+              value={calendarValue}
+              onChange={onCalendarChange}
+              startOfWeek={0}
+              useDarkMode
+            />
+          </div>
         </label>
 
         <label className="form-control w-4/5">
