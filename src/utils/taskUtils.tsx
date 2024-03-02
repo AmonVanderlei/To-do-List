@@ -51,6 +51,26 @@ export function sortTasks(tasks: Task[]): Task[] {
   ];
 }
 
+export function updateTasks(tasks: Task[]) {
+  const currentDate = new Date();
+  const today = currentDate.toDateString();
+  const lastUpdate: string | null = localStorage.getItem("lastUpdate");
+
+  if (lastUpdate) {
+    if (today !== lastUpdate) {
+      tasks.forEach((task) => {
+        if (task.status === "Completed") {
+          task.status = "To-do";
+        }
+      });
+    }
+  }
+
+  localStorage.setItem("lastUpdate", today);
+
+  return tasks;
+}
+
 function _renderType(task: Task, renderType: "To-do" | "Future") {
   const currentDate = new Date();
   const daysOfWeek = [

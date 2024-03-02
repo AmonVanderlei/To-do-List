@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import Task from "@/components/TaskComponent";
-import { sortTasks, renderTask } from "@/utils/taskUtils";
+import { sortTasks, renderTask, updateTasks } from "@/utils/taskUtils";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -17,7 +17,8 @@ export default function Home() {
     let storedTasks: string | null = localStorage.getItem("tasks");
 
     if (storedTasks != null) {
-      const sortedTasks: Task[] = sortTasks(JSON.parse(storedTasks));
+      const updatedTasks = updateTasks(JSON.parse(storedTasks));
+      const sortedTasks: Task[] = sortTasks(updatedTasks);
 
       setTasks(sortedTasks);
       setFilteredTasks(sortedTasks);
