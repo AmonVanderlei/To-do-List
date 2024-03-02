@@ -84,7 +84,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Sunday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Sunday"
@@ -94,7 +94,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Monday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Monday"
@@ -104,7 +104,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Tuesday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Tuesday"
@@ -114,7 +114,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Wednesday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Wednesday"
@@ -124,7 +124,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Thursday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Thursday"
@@ -134,7 +134,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Friday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Friday"
@@ -144,7 +144,7 @@ function Days({ setFormData, days }: DaysProps) {
         <button
           className={clsx(
             taskDays.includes("Saturday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle btn-outline !w-10 !h-10 !min-h-10"
+            "btn btn-circle !w-10 !h-10 !min-h-10"
           )}
           onClick={handleClick}
           value="Saturday"
