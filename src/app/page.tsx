@@ -68,7 +68,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="flex flex-wrap justify-evenly mt-2">
+        <div className="flex flex-wrap justify-around my-4">
           <label className="swap border rounded h-10 px-2">
             <input type="checkbox" onClick={handleRenderType} />
             <div className="swap-on">Tasks To Do</div>
@@ -85,17 +85,10 @@ export default function Home() {
           </label>
         </div>
 
-        <Link className="btn btn-ghost" href="/new-task">
-          <svg
-            className="white-svg"
-            width="24"
-            height="24"
-            xmlns="http://www.w3.org/2000/svg"
-            fillRule="evenodd"
-            clipRule="evenodd"
-          >
-            <path d="M11.5 0c6.347 0 11.5 5.153 11.5 11.5s-5.153 11.5-11.5 11.5-11.5-5.153-11.5-11.5 5.153-11.5 11.5-11.5zm0 1c5.795 0 10.5 4.705 10.5 10.5s-4.705 10.5-10.5 10.5-10.5-4.705-10.5-10.5 4.705-10.5 10.5-10.5zm.5 10h6v1h-6v6h-1v-6h-6v-1h6v-6h1v6z" />
-          </svg>
+        <Link
+          className="btn btn-outline w-5/6 m-auto text-primary"
+          href="/new-task"
+        >
           Create new task
         </Link>
 

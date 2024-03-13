@@ -96,18 +96,6 @@ function Task(obj: Task) {
           )}
 
           <div className="card-actions justify-between">
-            <p className="m-auto">
-              <b>Status:</b> {obj.status}
-            </p>
-            <p className="m-auto">
-              <b>Priority:</b> {obj.priority}
-            </p>
-            <p className="m-auto">
-              <b>Inicial Date:</b> {obj.inicialDate}
-            </p>
-          </div>
-
-          <div className="card-actions justify-between">
             <div className="card-actions justify-evenly">
               <ModifyButton
                 key={obj.title}
