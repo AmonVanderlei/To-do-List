@@ -37,7 +37,7 @@ const MyForm = () => {
 
   const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
-    inicialDate !== null ? toDate(inicialDate) : new Date()
+    inicialDate !== null ? toDate(inicialDate) : undefined
   );
 
   function toDate(dateString: string): Date {
