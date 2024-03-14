@@ -8,11 +8,14 @@ import Link from "next/link";
 import { Task, TaskStatus, TaskPriority } from "../../types/Task";
 import Days from "@/components/new-task/Days";
 import { Value } from "@natscale/react-calendar/dist/utils/types";
+import DeleteButton from "@/components/DeleteButton";
+import { deleteTask } from "@/utils/taskUtils";
 
 const MyForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const id: string | null = searchParams.get("id");
   const title: string | null = searchParams.get("title");
   const status = searchParams.get("status");
   const priority = searchParams.get("priority");
@@ -22,14 +25,17 @@ const MyForm = () => {
   const cancel: string =
     searchParams.get("cancel") === "false" ? "!hidden" : "";
 
-  const [formData, setFormData] = useState<Task>({
+  const taskToModify: Task = {
+    id: id !== null ? id : Date.now().toString(),
     title: title !== null ? title : "",
     status: status !== null ? (status as TaskStatus) : "To-do",
     priority: priority !== null ? (priority as TaskPriority) : "Low",
     inicialDate: inicialDate !== null ? inicialDate : "",
     days: days !== null && days !== undefined ? days.split(",") : [],
     description: description !== null ? description : "",
-  });
+  };
+
+  const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
     inicialDate !== null ? toDate(inicialDate) : new Date()
   );
@@ -79,6 +85,7 @@ const MyForm = () => {
 
     if (storedTasks != null) {
       let tasks = JSON.parse(storedTasks);
+      deleteTask(taskToModify);
       tasks.push(formData);
       localStorage.setItem("tasks", JSON.stringify(tasks));
     } else {
@@ -116,7 +123,6 @@ const MyForm = () => {
             onChange={handleChange}
           >
             <option value="To-do">To-do</option>
-            <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
           </select>
         </label>
@@ -171,15 +177,31 @@ const MyForm = () => {
           />
         </label>
 
-        <button type="submit" className="btn btn-outline mt-8 w-4/5">
-          Submit
-        </button>
-        <Link
-          className={`btn btn-outline btn-error mt-2 w-4/5 ${cancel}`}
-          href="/"
-        >
-          Cancel
-        </Link>
+        {cancel !== "!hidden" ? (
+          <button type="submit" className="btn btn-outline mt-8 mb-2 w-4/5">
+            Submit
+          </button>
+        ) : (
+          <button type="submit" className="btn btn-outline mt-8 mb-2 w-4/5">
+            Done
+          </button>
+        )}
+        {cancel !== "!hidden" ? (
+          <Link className="btn btn-outline btn-error mt-2 w-4/5" href="/">
+            Cancel
+          </Link>
+        ) : (
+          <DeleteButton
+            key={formData.description}
+            id={formData.id}
+            title={formData.title}
+            status={formData.status}
+            priority={formData.priority}
+            inicialDate={formData.inicialDate}
+            days={formData.days}
+            description={formData.description}
+          />
+        )}
       </form>
     </>
   );

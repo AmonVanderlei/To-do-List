@@ -95,19 +95,11 @@ function Task(obj: Task) {
             </button>
           )}
 
-          <div className="card-actions justify-between">
+          <div className="card-actions justify-end">
             <div className="card-actions justify-evenly">
               <ModifyButton
                 key={obj.title}
-                title={obj.title}
-                status={obj.status}
-                priority={obj.priority}
-                inicialDate={obj.inicialDate}
-                days={obj.days}
-                description={obj.description}
-              />
-              <DeleteButton
-                key={obj.description}
+                id={obj.id}
                 title={obj.title}
                 status={obj.status}
                 priority={obj.priority}
@@ -117,6 +109,7 @@ function Task(obj: Task) {
               />
               <DoneButton
                 key={obj.priority}
+                id={obj.id}
                 title={obj.title}
                 status={obj.status}
                 priority={obj.priority}

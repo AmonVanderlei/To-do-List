@@ -1,4 +1,4 @@
-import { Task } from "../types/Task";
+import { Task, TaskStatus } from "../types/Task";
 import TaskComponent from "@/components/TaskComponent";
 
 export function deleteTask(deletedTask: Task) {
@@ -8,12 +8,7 @@ export function deleteTask(deletedTask: Task) {
   let tasks: Task[] = JSON.parse(storedTasks);
 
   const newTasks: Task[] = tasks.filter((task) => {
-    return (
-      task.title !== deletedTask.title ||
-      task.description !== deletedTask.description ||
-      task.status !== deletedTask.status ||
-      task.priority !== deletedTask.priority
-    );
+    return task.id !== deletedTask.id;
   });
 
   localStorage.setItem("tasks", JSON.stringify(newTasks));
@@ -95,6 +90,7 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
         return (
           <TaskComponent
             key={task.description + task.title}
+            id={task.id}
             title={task.title}
             status={task.status}
             priority={task.priority}
@@ -113,6 +109,7 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
         return (
           <TaskComponent
             key={task.description + task.title}
+            id={task.id}
             title={task.title}
             status={task.status}
             priority={task.priority}
