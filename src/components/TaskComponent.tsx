@@ -98,7 +98,7 @@ function Task(obj: Task) {
           <div className="card-actions justify-end">
             <div className="card-actions justify-evenly">
               <ModifyButton
-                key={obj.title}
+                key={obj.id}
                 id={obj.id}
                 title={obj.title}
                 status={obj.status}
@@ -108,7 +108,7 @@ function Task(obj: Task) {
                 description={obj.description}
               />
               <DoneButton
-                key={obj.priority}
+                key={obj.id}
                 id={obj.id}
                 title={obj.title}
                 status={obj.status}

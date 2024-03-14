@@ -89,7 +89,7 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
       ) {
         return (
           <TaskComponent
-            key={task.description + task.title}
+            key={task.id}
             id={task.id}
             title={task.title}
             status={task.status}
@@ -108,7 +108,7 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
       ) {
         return (
           <TaskComponent
-            key={task.description + task.title}
+            key={task.id}
             id={task.id}
             title={task.title}
             status={task.status}

@@ -192,7 +192,7 @@ const MyForm = () => {
           </Link>
         ) : (
           <DeleteButton
-            key={formData.description}
+            key={formData.id}
             id={formData.id}
             title={formData.title}
             status={formData.status}
