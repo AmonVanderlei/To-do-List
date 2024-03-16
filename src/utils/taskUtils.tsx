@@ -8,7 +8,7 @@ export function deleteTask(deletedTask: Task) {
   let tasks: Task[] = JSON.parse(storedTasks);
 
   const newTasks: Task[] = tasks.filter((task) => {
-    return task.id !== deletedTask.id;
+    return task.id !== undefined || task.title !== deletedTask.title;
   });
 
   localStorage.setItem("tasks", JSON.stringify(newTasks));
