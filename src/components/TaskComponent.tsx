@@ -1,7 +1,6 @@
 import { useState } from "react";
 import clsx from "clsx";
-import { Task, TaskStatus, TaskPriority } from "../types/Task";
-import DeleteButton from "./DeleteButton";
+import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
 
@@ -52,7 +51,14 @@ function bgColor(task: Task): string {
   }
 }
 
-function Task(obj: Task) {
+interface Props {
+  obj: Task;
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Task({ obj, setTask, setShowModal, setToModify }: Props) {
   const [readMore, setReadMore] = useState<boolean>(false);
   const color = bgColor(obj);
 
@@ -85,7 +91,7 @@ function Task(obj: Task) {
             {descriptionLines}
           </div>
 
-          {descriptionLines.length > 4 && (
+          {descriptionLines.length >= 4 && (
             <button
               className="font-bold underline hover:text-blue-800"
               type="button"
@@ -99,16 +105,13 @@ function Task(obj: Task) {
             <div className="card-actions justify-evenly">
               <ModifyButton
                 key={obj.id}
-                id={obj.id}
-                title={obj.title}
-                status={obj.status}
-                priority={obj.priority}
-                inicialDate={obj.inicialDate}
-                days={obj.days}
-                description={obj.description}
+                obj={obj}
+                setTask={setTask}
+                setShowModal={setShowModal}
+                setToModify={setToModify}
               />
               <DoneButton
-                key={obj.id}
+                key={`${obj.id}${obj.title}`}
                 id={obj.id}
                 title={obj.title}
                 status={obj.status}

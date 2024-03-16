@@ -1,43 +1,34 @@
-"use client";
-
 import "@natscale/react-calendar/dist/main.css";
 import { Calendar } from "@natscale/react-calendar";
-import React, { useState, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { Task, TaskStatus, TaskPriority } from "../../types/Task";
-import Days from "@/components/new-task/Days";
+import React, { useState, useCallback, useEffect } from "react";
+import { Task } from "../types/Task";
+import Days from "@/components/Days";
 import { Value } from "@natscale/react-calendar/dist/utils/types";
 import DeleteButton from "@/components/DeleteButton";
 import { deleteTask } from "@/utils/taskUtils";
 
-const MyForm = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+interface FormProps {
+  toModify: boolean;
+  task: Task | null;
+  showModal: boolean;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-  const id: string | null = searchParams.get("id");
-  const title: string | null = searchParams.get("title");
-  const status = searchParams.get("status");
-  const priority = searchParams.get("priority");
-  const inicialDate = searchParams.get("inicialDate");
-  const days = searchParams.get("days");
-  const description: string | null = searchParams.get("description");
-  const cancel: string =
-    searchParams.get("cancel") === "false" ? "!hidden" : "";
-
-  const taskToModify: Task = {
-    id: id !== null ? id : Date.now().toString(),
-    title: title !== null ? title : "",
-    status: status !== null ? (status as TaskStatus) : "To-do",
-    priority: priority !== null ? (priority as TaskPriority) : "Low",
-    inicialDate: inicialDate !== null ? inicialDate : "",
-    days: days !== null && days !== undefined ? days.split(",") : [],
-    description: description !== null ? description : "",
-  };
-
+const TaskForm = ({ toModify, task, showModal, setShowModal }: FormProps) => {
+  const taskToModify: Task = task
+    ? task
+    : {
+        id: Date.now().toString(),
+        title: "",
+        status: "To-do",
+        priority: "Low",
+        inicialDate: "",
+        days: [],
+        description: "",
+      };
   const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
-    inicialDate !== null ? toDate(inicialDate) : undefined
+    task ? toDate(task?.inicialDate) : undefined
   );
 
   function toDate(dateString: string): Date {
@@ -84,21 +75,35 @@ const MyForm = () => {
     let storedTasks = localStorage.getItem("tasks");
 
     if (storedTasks != null) {
-      let tasks = JSON.parse(storedTasks);
       deleteTask(taskToModify);
+      const storedTasksAfterDelete = localStorage.getItem("tasks") as string;
+      let tasks = JSON.parse(storedTasksAfterDelete);
       tasks.push(formData);
       localStorage.setItem("tasks", JSON.stringify(tasks));
     } else {
       localStorage.setItem("tasks", JSON.stringify([formData]));
     }
 
-    router.push("/");
+    setShowModal(false);
+    window.location.reload();
   };
+
+  useEffect(() => {
+    if (showModal) {
+      setFormData(taskToModify);
+    }
+  }, [showModal]);
+
+  useEffect(() => {
+    if (formData.inicialDate) {
+      setCalendarValue(toDate(formData.inicialDate));
+    }
+  }, [formData]);
 
   return (
     <>
       <form className="flex items-center flex-col" onSubmit={handleSubmit}>
-        <label className="flex flex-col w-4/5">
+        <label className="flex flex-col w-full">
           <div className="label">
             <span className="label-text">Title</span>
           </div>
@@ -112,7 +117,7 @@ const MyForm = () => {
           />
         </label>
 
-        <label className="form-control w-4/5">
+        <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Status</span>
           </div>
@@ -127,7 +132,7 @@ const MyForm = () => {
           </select>
         </label>
 
-        <label className="form-control w-4/5">
+        <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Priority</span>
           </div>
@@ -143,7 +148,7 @@ const MyForm = () => {
           </select>
         </label>
 
-        <label className="form-control w-4/5">
+        <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Inicial date</span>
           </div>
@@ -157,14 +162,14 @@ const MyForm = () => {
           </div>
         </label>
 
-        <label className="form-control w-4/5">
+        <label className="form-control w-full">
           <div className="label">
             <span className="label-text">Days</span>
           </div>
           <Days setFormData={setFormData} days={formData.days} />
         </label>
 
-        <label className="flex flex-col w-4/5">
+        <label className="flex flex-col w-full">
           <div className="label">
             <span className="label-text">Description</span>
           </div>
@@ -177,34 +182,36 @@ const MyForm = () => {
           />
         </label>
 
-        {cancel !== "!hidden" ? (
-          <button type="submit" className="btn btn-outline mt-8 mb-2 w-4/5">
-            Submit
-          </button>
+        {!toModify ? (
+          <>
+            <button type="submit" className="btn btn-outline mt-8 mb-2 w-full">
+              Submit
+            </button>
+            <button
+              className="btn btn-outline btn-error mt-2 w-full"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowModal(false);
+              }}
+            >
+              Cancel
+            </button>
+          </>
         ) : (
-          <button type="submit" className="btn btn-outline mt-8 mb-2 w-4/5">
-            Done
-          </button>
-        )}
-        {cancel !== "!hidden" ? (
-          <Link className="btn btn-outline btn-error mt-2 w-4/5" href="/">
-            Cancel
-          </Link>
-        ) : (
-          <DeleteButton
-            key={formData.id}
-            id={formData.id}
-            title={formData.title}
-            status={formData.status}
-            priority={formData.priority}
-            inicialDate={formData.inicialDate}
-            days={formData.days}
-            description={formData.description}
-          />
+          <>
+            <button type="submit" className="btn btn-outline mt-8 mb-2 w-full">
+              Done
+            </button>
+            <DeleteButton
+              key={formData.id}
+              obj={formData}
+              className="!w-full"
+            />
+          </>
         )}
       </form>
     </>
   );
 };
 
-export default MyForm;
+export default TaskForm;

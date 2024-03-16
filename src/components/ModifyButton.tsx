@@ -1,21 +1,20 @@
-import { useRouter } from "next/navigation";
 import { Task } from "../types/Task";
 
-function ModifyButton(obj: Task) {
-  const router = useRouter();
+interface Props {
+  obj: Task;
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ModifyButton({ obj, setTask, setShowModal, setToModify }: Props) {
   const handleModify: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const { value } = e.currentTarget as HTMLButtonElement;
     const modifiedTask: Task = JSON.parse(value);
 
-    const queryString = `id=${modifiedTask.id}&title=${
-      modifiedTask.title
-    }&status=${modifiedTask.status}&priority=${
-      modifiedTask.priority
-    }&inicialDate=${modifiedTask.inicialDate}&days=${
-      modifiedTask.days
-    }&description=${encodeURIComponent(modifiedTask.description)}&cancel=false`;
-
-    router.push(`/new-task?${queryString}`);
+    setToModify(true);
+    setTask(modifiedTask);
+    setShowModal(true);
   };
 
   return (

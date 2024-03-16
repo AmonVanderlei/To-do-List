@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react";
 import clsx from "clsx";
-import Link from "next/link";
 import Task from "@/components/TaskComponent";
 import { sortTasks, renderTask, updateTasks } from "@/utils/taskUtils";
+import TaskModal from "@/components/TaskModal";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -12,6 +12,9 @@ export default function Home() {
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [completed, setCompleted] = useState<boolean>(false);
   const [renderType, setRenderType] = useState<"To-do" | "Future">("To-do");
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [task, setTask] = useState<Task | null>(null);
+  const [toModify, setToModify] = useState<boolean>(false);
 
   useEffect(() => {
     let storedTasks: string | null = localStorage.getItem("tasks");
@@ -85,17 +88,35 @@ export default function Home() {
           </label>
         </div>
 
-        <Link
+        <button
           className="btn btn-outline w-5/6 m-auto text-primary"
-          href="/new-task"
+          onClick={() => {
+            setShowModal(true);
+          }}
         >
           Create new task
-        </Link>
+        </button>
 
         <div className="w-full pt-4 px-4">
-          {filteredTasks.map((task) => renderTask(task, completed, renderType))}
+          {filteredTasks.map((task) =>
+            renderTask(
+              task,
+              completed,
+              renderType,
+              setTask,
+              setShowModal,
+              setToModify
+            )
+          )}
         </div>
       </div>
+
+      <TaskModal
+        toModify={toModify}
+        task={task}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
     </main>
   );
 }

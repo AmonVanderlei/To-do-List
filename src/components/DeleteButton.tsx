@@ -1,9 +1,12 @@
 import { Task } from "../types/Task";
-import { useRouter } from "next/navigation";
 import { deleteTask } from "@/utils/taskUtils";
 
-function DeleteButton(obj: Task) {
-  const router = useRouter();
+interface Props {
+  obj: Task;
+  className?: string;
+}
+
+function DeleteButton({ obj, className }: Props) {
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const { value } = e.currentTarget as HTMLButtonElement;
@@ -11,13 +14,13 @@ function DeleteButton(obj: Task) {
 
     deleteTask(deletedTask);
 
-    router.push("/");
+    window.location.reload();
   };
 
   return (
     <button
       value={JSON.stringify(obj)}
-      className="btn btn-outline btn-error mt-2 w-4/5"
+      className={`btn btn-outline btn-error mt-2 w-4/5 ${className}`}
       onClick={handleDelete}
     >
       Delete

@@ -8,8 +8,16 @@ interface DaysProps {
 }
 
 function Days({ setFormData, days }: DaysProps) {
-  const [taskDays, setTaskDays] = useState<string[]>(days || []);
+  const [taskDays, setTaskDays] = useState<string[]>(
+    days !== undefined ? days : []
+  );
   const [allChecked, setAllChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (days !== undefined) {
+      setTaskDays(days);
+    }
+  }, [days]);
 
   useEffect(() => {
     if (taskDays.length < 7) {

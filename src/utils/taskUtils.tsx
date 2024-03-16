@@ -1,4 +1,4 @@
-import { Task, TaskStatus } from "../types/Task";
+import { Task } from "../types/Task";
 import TaskComponent from "@/components/TaskComponent";
 
 export function deleteTask(deletedTask: Task) {
@@ -66,7 +66,13 @@ export function updateTasks(tasks: Task[]) {
   return tasks;
 }
 
-function _renderType(task: Task, renderType: "To-do" | "Future") {
+function _renderType(
+  task: Task,
+  renderType: "To-do" | "Future",
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>
+) {
   const currentDate = new Date();
   const daysOfWeek = [
     "Sunday",
@@ -90,13 +96,10 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
         return (
           <TaskComponent
             key={task.id}
-            id={task.id}
-            title={task.title}
-            status={task.status}
-            priority={task.priority}
-            inicialDate={task.inicialDate}
-            days={task.days}
-            description={task.description}
+            obj={task}
+            setTask={setTask}
+            setShowModal={setShowModal}
+            setToModify={setToModify}
           />
         );
       }
@@ -109,13 +112,10 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
         return (
           <TaskComponent
             key={task.id}
-            id={task.id}
-            title={task.title}
-            status={task.status}
-            priority={task.priority}
-            inicialDate={task.inicialDate}
-            days={task.days}
-            description={task.description}
+            obj={task}
+            setTask={setTask}
+            setShowModal={setShowModal}
+            setToModify={setToModify}
           />
         );
       }
@@ -126,15 +126,18 @@ function _renderType(task: Task, renderType: "To-do" | "Future") {
 export function renderTask(
   task: Task,
   completed: boolean,
-  renderType: "To-do" | "Future"
+  renderType: "To-do" | "Future",
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>,
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   if (completed) {
     if (task.status === "Completed") {
-      return _renderType(task, renderType);
+      return _renderType(task, renderType, setTask, setShowModal, setToModify);
     }
   } else {
     if (task.status !== "Completed") {
-      return _renderType(task, renderType);
+      return _renderType(task, renderType, setTask, setShowModal, setToModify);
     }
   }
 }
