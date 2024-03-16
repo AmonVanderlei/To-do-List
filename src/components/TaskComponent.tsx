@@ -104,19 +104,14 @@ function Task({ obj, setTask, setShowModal, setToModify }: Props) {
             </button>
           )}
 
-          {/* {taskDate.getTime() > currentDate.getTime() || */}
-          {/* // !obj.days.includes(today) ? ( */}
-          <div className="card-actions justify-between">
-            <p className="m-auto">
-              <b>Inicial Date:</b> {obj.inicialDate}
-            </p>
-          </div>
-          {/* // ) : null} */}
-          <div className="card-actions justify-between">
-            <p className="m-auto">
-              <b>ID:</b> {obj.id}
-            </p>
-          </div>
+          {taskDate.getTime() > currentDate.getTime() ||
+          !obj.days.includes(today) ? (
+            <div className="card-actions justify-between">
+              <p className="m-auto">
+                <b>Inicial Date:</b> {obj.inicialDate}
+              </p>
+            </div>
+          ) : null}
 
           <div className="card-actions justify-end">
             <div className="card-actions justify-evenly">

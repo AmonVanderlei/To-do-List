@@ -7,15 +7,6 @@ import { Value } from "@natscale/react-calendar/dist/utils/types";
 import DeleteButton from "@/components/DeleteButton";
 import { deleteTask } from "@/utils/taskUtils";
 
-function setID(task: Task) {
-  if (task.id) {
-    return task;
-  } else {
-    task.id = Date.now().toString();
-    return task;
-  }
-}
-
 interface FormProps {
   toModify: boolean;
   task: Task | null;
@@ -24,18 +15,17 @@ interface FormProps {
 }
 
 const TaskForm = ({ toModify, task, showModal, setShowModal }: FormProps) => {
-  const taskToModify: Task =
-    task !== null
-      ? setID(task)
-      : {
-          id: Date.now().toString(),
-          title: "",
-          status: "To-do",
-          priority: "Low",
-          inicialDate: "",
-          days: [],
-          description: "",
-        };
+  const taskToModify: Task = task
+    ? task
+    : {
+        id: Date.now().toString(),
+        title: "",
+        status: "To-do",
+        priority: "Low",
+        inicialDate: "",
+        days: [],
+        description: "",
+      };
   const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
     task ? toDate(task?.inicialDate) : undefined
