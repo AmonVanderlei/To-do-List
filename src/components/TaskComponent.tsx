@@ -4,21 +4,12 @@ import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
 
-function bgColor(task: Task): string {
-  const currentDate = new Date();
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const today = daysOfWeek[currentDate.getDay()];
-
-  const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
-
+function bgColor(
+  task: Task,
+  currentDate: Date,
+  today: string,
+  taskDate: Date
+): string {
   if (
     taskDate.getTime() <= currentDate.getTime() &&
     task.days.includes(today)
@@ -60,7 +51,19 @@ interface Props {
 
 function Task({ obj, setTask, setShowModal, setToModify }: Props) {
   const [readMore, setReadMore] = useState<boolean>(false);
-  const color = bgColor(obj);
+  const currentDate = new Date();
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = daysOfWeek[currentDate.getDay()];
+  const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
+  const color = bgColor(obj, currentDate, today, taskDate);
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
@@ -100,6 +103,15 @@ function Task({ obj, setTask, setShowModal, setToModify }: Props) {
               {readMore ? "Ler menos" : "Ler mais"}
             </button>
           )}
+
+          {taskDate.getTime() > currentDate.getTime() ||
+          !obj.days.includes(today) ? (
+            <div className="card-actions justify-between">
+              <p className="m-auto">
+                <b>Inicial Date:</b> {obj.inicialDate}
+              </p>
+            </div>
+          ) : null}
 
           <div className="card-actions justify-end">
             <div className="card-actions justify-evenly">
