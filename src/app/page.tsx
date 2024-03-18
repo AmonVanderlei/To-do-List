@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import clsx from "clsx";
 import Task from "@/components/TaskComponent";
-import { sortTasks, renderTask, updateTasks } from "@/utils/taskUtils";
+import { getLocalStorage, renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
 
 export default function Home() {
@@ -15,20 +15,17 @@ export default function Home() {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [task, setTask] = useState<Task | null>(null);
   const [toModify, setToModify] = useState<boolean>(false);
+  const [reload, setReload] = useState<boolean>(true);
 
   useEffect(() => {
-    let storedTasks: string | null = localStorage.getItem("tasks");
+    if (reload) {
+      let storedTasks: Task[] = getLocalStorage();
 
-    if (storedTasks != null) {
-      const updatedTasks = updateTasks(JSON.parse(storedTasks));
-      const sortedTasks: Task[] = sortTasks(updatedTasks);
-
-      setTasks(sortedTasks);
-      setFilteredTasks(sortedTasks);
-
-      localStorage.setItem("tasks", JSON.stringify(sortedTasks));
+      setTasks(storedTasks);
+      setFilteredTasks(storedTasks);
+      setReload(false);
     }
-  }, []);
+  }, [reload]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -105,7 +102,9 @@ export default function Home() {
               renderType,
               setTask,
               setShowModal,
-              setToModify
+              setToModify,
+              setReload,
+              setCompleted
             )
           )}
         </div>
@@ -116,6 +115,7 @@ export default function Home() {
         task={task}
         showModal={showModal}
         setShowModal={setShowModal}
+        setReload={setReload}
       />
     </main>
   );

@@ -4,9 +4,11 @@ import { deleteTask } from "@/utils/taskUtils";
 interface Props {
   obj: Task;
   className?: string;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DeleteButton({ obj, className }: Props) {
+function DeleteButton({ obj, className, setReload, setShowModal }: Props) {
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const { value } = e.currentTarget as HTMLButtonElement;
@@ -14,7 +16,8 @@ function DeleteButton({ obj, className }: Props) {
 
     deleteTask(deletedTask);
 
-    window.location.reload();
+    setShowModal(false);
+    setReload((prevReload) => !prevReload);
   };
 
   return (

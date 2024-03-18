@@ -1,7 +1,13 @@
 import { Task } from "../types/Task";
 import { deleteTask } from "@/utils/taskUtils";
 
-function DoneButton(obj: Task) {
+interface Props {
+  obj: Task;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function DoneButton({ obj, setReload, setCompleted }: Props) {
   const handleDone: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const { value } = e.currentTarget as HTMLButtonElement;
     const modifiedTask: Task = JSON.parse(value);
@@ -24,7 +30,8 @@ function DoneButton(obj: Task) {
       localStorage.setItem("tasks", JSON.stringify([modifiedTask]));
     }
 
-    window.location.reload();
+    setCompleted(false);
+    setReload((prevReload) => !prevReload);
   };
 
   return (

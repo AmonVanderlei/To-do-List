@@ -14,7 +14,7 @@ export function deleteTask(deletedTask: Task) {
   localStorage.setItem("tasks", JSON.stringify(newTasks));
 }
 
-export function sortTasks(tasks: Task[]): Task[] {
+function _sortTasks(tasks: Task[]): Task[] {
   let highPriorityTasks: Task[] = [];
   let mediumPriorityTasks: Task[] = [];
   let lowPriorityTasks: Task[] = [];
@@ -46,7 +46,7 @@ export function sortTasks(tasks: Task[]): Task[] {
   ];
 }
 
-export function updateTasks(tasks: Task[]) {
+function _updateTasks(tasks: Task[]) {
   const currentDate = new Date();
   const today = currentDate.toDateString();
   const lastUpdate: string | null = localStorage.getItem("lastUpdate");
@@ -66,12 +66,28 @@ export function updateTasks(tasks: Task[]) {
   return tasks;
 }
 
+export function getLocalStorage() {
+  let storedTasks: string | null = localStorage.getItem("tasks");
+
+  if (storedTasks != null) {
+    const updatedTasks = _updateTasks(JSON.parse(storedTasks));
+    const sortedTasks: Task[] = _sortTasks(updatedTasks);
+
+    localStorage.setItem("tasks", JSON.stringify(sortedTasks));
+
+    return sortedTasks;
+  }
+  return [];
+}
+
 function _renderType(
   task: Task,
   renderType: "To-do" | "Future",
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setToModify: React.Dispatch<React.SetStateAction<boolean>>
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>,
+  setReload: React.Dispatch<React.SetStateAction<boolean>>,
+  setCompleted: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   const currentDate = new Date();
   const daysOfWeek = [
@@ -100,6 +116,8 @@ function _renderType(
             setTask={setTask}
             setShowModal={setShowModal}
             setToModify={setToModify}
+            setReload={setReload}
+            setCompleted={setCompleted}
           />
         );
       }
@@ -116,6 +134,8 @@ function _renderType(
             setTask={setTask}
             setShowModal={setShowModal}
             setToModify={setToModify}
+            setReload={setReload}
+            setCompleted={setCompleted}
           />
         );
       }
@@ -129,15 +149,33 @@ export function renderTask(
   renderType: "To-do" | "Future",
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setToModify: React.Dispatch<React.SetStateAction<boolean>>
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>,
+  setReload: React.Dispatch<React.SetStateAction<boolean>>,
+  setCompleted: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   if (completed) {
     if (task.status === "Completed") {
-      return _renderType(task, renderType, setTask, setShowModal, setToModify);
+      return _renderType(
+        task,
+        renderType,
+        setTask,
+        setShowModal,
+        setToModify,
+        setReload,
+        setCompleted
+      );
     }
   } else {
     if (task.status !== "Completed") {
-      return _renderType(task, renderType, setTask, setShowModal, setToModify);
+      return _renderType(
+        task,
+        renderType,
+        setTask,
+        setShowModal,
+        setToModify,
+        setReload,
+        setCompleted
+      );
     }
   }
 }

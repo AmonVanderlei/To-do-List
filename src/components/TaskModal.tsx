@@ -7,9 +7,16 @@ interface ModalProps {
   task: Task | null;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TaskModal = ({ toModify, task, showModal, setShowModal }: ModalProps) => {
+const TaskModal = ({
+  toModify,
+  task,
+  showModal,
+  setShowModal,
+  setReload,
+}: ModalProps) => {
   return (
     <>
       <input
@@ -26,6 +33,7 @@ const TaskModal = ({ toModify, task, showModal, setShowModal }: ModalProps) => {
             task={task}
             showModal={showModal}
             setShowModal={setShowModal}
+            setReload={setReload}
           />
         </div>
       </div>

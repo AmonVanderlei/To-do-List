@@ -12,9 +12,16 @@ interface FormProps {
   task: Task | null;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TaskForm = ({ toModify, task, showModal, setShowModal }: FormProps) => {
+const TaskForm = ({
+  toModify,
+  task,
+  showModal,
+  setShowModal,
+  setReload,
+}: FormProps) => {
   const taskToModify: Task = task
     ? task
     : {
@@ -85,7 +92,7 @@ const TaskForm = ({ toModify, task, showModal, setShowModal }: FormProps) => {
     }
 
     setShowModal(false);
-    window.location.reload();
+    setReload((prevReload) => !prevReload);
   };
 
   useEffect(() => {
@@ -206,6 +213,8 @@ const TaskForm = ({ toModify, task, showModal, setShowModal }: FormProps) => {
               key={formData.id}
               obj={formData}
               className="!w-full"
+              setReload={setReload}
+              setShowModal={setShowModal}
             />
           </>
         )}

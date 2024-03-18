@@ -47,9 +47,18 @@ interface Props {
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Task({ obj, setTask, setShowModal, setToModify }: Props) {
+function Task({
+  obj,
+  setTask,
+  setShowModal,
+  setToModify,
+  setReload,
+  setCompleted,
+}: Props) {
   const [readMore, setReadMore] = useState<boolean>(false);
   const currentDate = new Date();
   const daysOfWeek = [
@@ -124,13 +133,9 @@ function Task({ obj, setTask, setShowModal, setToModify }: Props) {
               />
               <DoneButton
                 key={`${obj.id}${obj.title}`}
-                id={obj.id}
-                title={obj.title}
-                status={obj.status}
-                priority={obj.priority}
-                inicialDate={obj.inicialDate}
-                days={obj.days}
-                description={obj.description}
+                obj={obj}
+                setReload={setReload}
+                setCompleted={setCompleted}
               />
             </div>
           </div>
