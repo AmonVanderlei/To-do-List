@@ -6,9 +6,18 @@ interface Props {
   className?: string;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DeleteButton({ obj, className, setReload, setShowModal }: Props) {
+function DeleteButton({
+  obj,
+  className,
+  setReload,
+  setShowModal,
+  setTask,
+  setToModify,
+}: Props) {
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const { value } = e.currentTarget as HTMLButtonElement;
@@ -16,6 +25,8 @@ function DeleteButton({ obj, className, setReload, setShowModal }: Props) {
 
     deleteTask(deletedTask);
 
+    setTask(null);
+    setToModify(false);
     setShowModal(false);
     setReload((prevReload) => !prevReload);
   };

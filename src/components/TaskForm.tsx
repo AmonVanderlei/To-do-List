@@ -13,6 +13,8 @@ interface FormProps {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
+  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TaskForm = ({
@@ -21,6 +23,8 @@ const TaskForm = ({
   showModal,
   setShowModal,
   setReload,
+  setTask,
+  setToModify,
 }: FormProps) => {
   const taskToModify: Task = task
     ? task
@@ -91,6 +95,8 @@ const TaskForm = ({
       localStorage.setItem("tasks", JSON.stringify([formData]));
     }
 
+    setTask(null);
+    setToModify(false);
     setShowModal(false);
     setReload((prevReload) => !prevReload);
   };
@@ -215,6 +221,8 @@ const TaskForm = ({
               className="!w-full"
               setReload={setReload}
               setShowModal={setShowModal}
+              setTask={setTask}
+              setToModify={setToModify}
             />
           </>
         )}

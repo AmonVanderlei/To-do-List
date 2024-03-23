@@ -116,6 +116,8 @@ export default function Home() {
         showModal={showModal}
         setShowModal={setShowModal}
         setReload={setReload}
+        setTask={setTask}
+        setToModify={setToModify}
       />
     </main>
   );
