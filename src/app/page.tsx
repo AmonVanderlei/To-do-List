@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Task from "@/components/TaskComponent";
 import { getLocalStorage, renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
+import ErrorAlert from "@/components/ErrorAlert";
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -16,6 +17,17 @@ export default function Home() {
   const [task, setTask] = useState<Task | null>(null);
   const [toModify, setToModify] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(true);
+  const [showError, setShowError] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (showError) {
+      const timer = setTimeout(() => {
+        setShowError(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showError]);
 
   useEffect(() => {
     if (reload) {
@@ -118,7 +130,10 @@ export default function Home() {
         setReload={setReload}
         setTask={setTask}
         setToModify={setToModify}
+        setShowError={setShowError}
       />
+
+      <ErrorAlert showError={showError} />
     </main>
   );
 }

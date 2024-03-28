@@ -10,6 +10,7 @@ interface ModalProps {
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const TaskModal = ({
@@ -19,7 +20,8 @@ const TaskModal = ({
   setShowModal,
   setReload,
   setTask,
-  setToModify
+  setToModify,
+  setShowError,
 }: ModalProps) => {
   return (
     <>
@@ -40,6 +42,7 @@ const TaskModal = ({
             setReload={setReload}
             setTask={setTask}
             setToModify={setToModify}
+            setShowError={setShowError}
           />
         </div>
       </div>
