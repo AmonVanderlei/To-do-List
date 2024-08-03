@@ -58,7 +58,7 @@ function TaskComponent({
 
   return (
     <>
-      <div className={`card w-full ${color} text-primary-content mt-4`}>
+      <div className={clsx("card w-full text-primary-content mt-4", color)}>
         <div className="card-body !px-6">
           <h2 className="card-title">{obj.title}</h2>
 
