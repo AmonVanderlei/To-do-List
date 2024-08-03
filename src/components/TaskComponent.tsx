@@ -36,7 +36,7 @@ function TaskComponent({
   ];
   const today = daysOfWeek[currentDate.getDay()];
   const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
-  const color = colorTask;
+  const color = colorTask || "bg-yellow-500";
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
