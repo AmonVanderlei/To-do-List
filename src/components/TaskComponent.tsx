@@ -4,9 +4,43 @@ import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
 
+function bgColor(
+  task: Task,
+  today: string,
+  tomorrowDate: Date,
+  tomorrow: string,
+  taskDate: Date
+): string {
+  if (task.status === "Completed") {
+    return "bg-green-600";
+  } else {
+    if (
+      taskDate.getTime() <= tomorrowDate.getTime() &&
+      (task.days.includes(tomorrow) || task.days.includes(today))
+    ) {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600";
+        case "Medium":
+          return "bg-yellow-500";
+        case "Low":
+          return "bg-primary";
+      }
+    } else {
+      switch (task.priority) {
+        case "High":
+          return "bg-red-600 bg-opacity-50";
+        case "Medium":
+          return "bg-yellow-500 bg-opacity-50";
+        case "Low":
+          return "bg-slate-700";
+      }
+    }
+  }
+}
+
 interface Props {
   obj: Task;
-  colorTask: string;
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,14 +50,12 @@ interface Props {
 
 function TaskComponent({
   obj,
-  colorTask,
   setTask,
   setShowModal,
   setToModify,
   setReload,
   setCompleted,
 }: Props) {
-  const [color, setColor] = useState<string>("bg-yellow-500");
   const [readMore, setReadMore] = useState<boolean>(false);
   const currentDate = new Date();
   const daysOfWeek = [
@@ -36,7 +68,16 @@ function TaskComponent({
     "Saturday",
   ];
   const today = daysOfWeek[currentDate.getDay()];
+  const tomorrowIndex = (currentDate.getDay() + 1) % 7;
+  const tomorrow = daysOfWeek[tomorrowIndex];
+
   const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
+  taskDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+  const tomorrowDate = new Date(currentDate);
+  tomorrowDate.setDate(currentDate.getDate() + 1);
+
+  const color = bgColor(obj, today, tomorrowDate, tomorrow, taskDate);
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
@@ -51,10 +92,6 @@ function TaskComponent({
       setReadMore(true);
     }
   };
-
-  useEffect(() => {
-    setColor(colorTask);
-  }, [colorTask]);
 
   return (
     <>

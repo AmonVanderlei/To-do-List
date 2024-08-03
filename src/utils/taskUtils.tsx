@@ -101,12 +101,14 @@ export function renderTask(
     "Saturday",
   ];
   const today = daysOfWeek[currentDate.getDay()];
-  const tomorrow = daysOfWeek[currentDate.getDay() + 1];
-  const milliseconds_per_day = 24 * 60 * 60 * 1000;
+  const tomorrowIndex = (currentDate.getDay() + 1) % 7;
+  const tomorrow = daysOfWeek[tomorrowIndex];
 
   const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
-
-  let colorTask = "bg-primary";
+  taskDate.setHours(0, 0, 0, 0);
+  currentDate.setHours(0, 0, 0, 0);
+  const tomorrowDate = new Date(currentDate);
+  tomorrowDate.setDate(currentDate.getDate() + 1);
 
   switch (renderType) {
     case "To-do":
@@ -114,15 +116,8 @@ export function renderTask(
         taskDate.getTime() <= currentDate.getTime() &&
         task.days.includes(today)
       ) {
-        if (task.priority === "High") {
-          colorTask = "bg-red-600";
-        } else if (task.priority === "Medium") {
-          colorTask = "bg-yellow-500";
-        }
-
         return _renderStatus(
           task,
-          colorTask,
           completed,
           setTask,
           setShowModal,
@@ -134,18 +129,11 @@ export function renderTask(
       break;
     case "Tomorrow":
       if (
-        taskDate.getTime() <= currentDate.getTime() + milliseconds_per_day &&
+        taskDate.getTime() <= tomorrowDate.getTime() &&
         task.days.includes(tomorrow)
       ) {
-        if (task.priority === "High") {
-          colorTask = "bg-red-600";
-        } else if (task.priority === "Medium") {
-          colorTask = "bg-yellow-500";
-        }
-
         return _renderStatus(
           task,
-          colorTask,
           completed,
           setTask,
           setShowModal,
@@ -160,17 +148,8 @@ export function renderTask(
         taskDate.getTime() > currentDate.getTime() ||
         !task.days.includes(today)
       ) {
-        if (task.priority === "High") {
-          colorTask = "bg-red-600 bg-opacity-50";
-        } else if (task.priority === "Medium") {
-          colorTask = "bg-yellow-500 bg-opacity-50";
-        } else {
-          colorTask = "bg-slate-700";
-        }
-
         return _renderStatus(
           task,
-          colorTask,
           completed,
           setTask,
           setShowModal,
@@ -185,7 +164,6 @@ export function renderTask(
 
 function _renderStatus(
   task: Task,
-  colorTask: string,
   completed: boolean,
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
@@ -199,7 +177,6 @@ function _renderStatus(
         <TaskComponent
           key={task.id}
           obj={task}
-          colorTask="bg-green-600"
           setTask={setTask}
           setShowModal={setShowModal}
           setToModify={setToModify}
@@ -214,7 +191,6 @@ function _renderStatus(
         <TaskComponent
           key={task.id}
           obj={task}
-          colorTask={colorTask}
           setTask={setTask}
           setShowModal={setShowModal}
           setToModify={setToModify}
