@@ -4,46 +4,9 @@ import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
 import DoneButton from "./DoneButton";
 
-function bgColor(
-  task: Task,
-  currentDate: Date,
-  today: string,
-  taskDate: Date
-): string {
-  if (
-    taskDate.getTime() <= currentDate.getTime() &&
-    task.days.includes(today)
-  ) {
-    if (task.status === "Completed") {
-      return "bg-green-600";
-    } else {
-      switch (task.priority) {
-        case "High":
-          return "bg-red-600";
-        case "Medium":
-          return "bg-yellow-500";
-        case "Low":
-          return "bg-primary";
-      }
-    }
-  } else {
-    if (task.status === "Completed") {
-      return "bg-green-600 bg-opacity-50";
-    } else {
-      switch (task.priority) {
-        case "High":
-          return "bg-red-600 bg-opacity-50";
-        case "Medium":
-          return "bg-yellow-500 bg-opacity-50";
-        case "Low":
-          return "bg-slate-700";
-      }
-    }
-  }
-}
-
 interface Props {
   obj: Task;
+  colorTask: string;
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,8 +14,9 @@ interface Props {
   setCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Task({
+function TaskComponent({
   obj,
+  colorTask,
   setTask,
   setShowModal,
   setToModify,
@@ -72,7 +36,7 @@ function Task({
   ];
   const today = daysOfWeek[currentDate.getDay()];
   const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
-  const color = bgColor(obj, currentDate, today, taskDate);
+  const color = colorTask;
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
@@ -145,4 +109,4 @@ function Task({
   );
 }
 
-export default Task;
+export default TaskComponent;

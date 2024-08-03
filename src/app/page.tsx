@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import clsx from "clsx";
-import Task from "@/components/TaskComponent";
+import { Task } from "@/types/Task";
 import { getLocalStorage, renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
 import ErrorAlert from "@/components/ErrorAlert";
@@ -12,7 +12,9 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
   const [completed, setCompleted] = useState<boolean>(false);
-  const [renderType, setRenderType] = useState<"To-do" | "Future">("To-do");
+  const [renderType, setRenderType] = useState<"To-do" | "Future" | "Tomorrow">(
+    "To-do"
+  );
   const [showModal, setShowModal] = useState<boolean>(false);
   const [task, setTask] = useState<Task | null>(null);
   const [toModify, setToModify] = useState<boolean>(false);
@@ -56,18 +58,26 @@ export default function Home() {
     setCompleted(!completed);
   };
 
-  const handleRenderType = () => {
-    if (renderType === "To-do") {
-      setRenderType("Future");
-    } else {
-      setRenderType("To-do");
-    }
+  const handleRenderType = (e: any) => {
+    e.preventDefault();
+
+    setRenderType(e.target.value);
   };
 
   return (
     <main className="flex flex-col items-center justify-between py-10 px-4">
       <div className="flex flex-col	w-full">
-        <h1 className="text-3xl mt-4 px-4">Tasks</h1>
+        <div className="flex flex-wrap items-center justify-around w-full">
+          <h1 className="text-3xl px-4">Tasks</h1>
+          <button
+            className="btn btn-outline w-1/2 text-primary"
+            onClick={() => {
+              setShowModal(true);
+            }}
+          >
+            Create new task
+          </button>
+        </div>
 
         <div className="flex justify-center mt-4">
           <input
@@ -75,17 +85,23 @@ export default function Home() {
             name="search"
             value={searchValue}
             placeholder="Search"
-            className="input input-bordered w-5/6 min-w-32"
+            className="input input-bordered w-11/12 min-w-32"
             onChange={handleChange}
           />
         </div>
 
-        <div className="flex flex-wrap justify-around my-4">
-          <label className="swap border rounded h-10 px-2">
-            <input type="checkbox" onClick={handleRenderType} />
-            <div className="swap-on">Tasks To Do</div>
-            <div className="swap-off">Future Tasks</div>
-          </label>
+        <div className="flex flex-wrap justify-around items-center my-4">
+          <select
+            onChange={handleRenderType}
+            className="select select-bordered w-1/2 min-w-32 h-10"
+          >
+            <option value="To-do" selected>
+              Tasks To Do
+            </option>
+            <option value="Future">Future Tasks</option>
+            <option value="Tomorrow">Tomorrow Tasks</option>
+          </select>
+
           <label
             className={clsx("swap border rounded h-10 px-2", {
               "text-success": completed,
@@ -96,15 +112,6 @@ export default function Home() {
             <div className="swap-off">Completed</div>
           </label>
         </div>
-
-        <button
-          className="btn btn-outline w-5/6 m-auto text-primary"
-          onClick={() => {
-            setShowModal(true);
-          }}
-        >
-          Create new task
-        </button>
 
         <div className="w-full pt-4 px-4">
           {filteredTasks.map((task) =>

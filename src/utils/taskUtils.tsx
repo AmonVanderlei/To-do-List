@@ -80,9 +80,10 @@ export function getLocalStorage() {
   return [];
 }
 
-function _renderType(
+export function renderTask(
   task: Task,
-  renderType: "To-do" | "Future",
+  completed: boolean,
+  renderType: "To-do" | "Future" | "Tomorrow",
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   setToModify: React.Dispatch<React.SetStateAction<boolean>>,
@@ -100,8 +101,12 @@ function _renderType(
     "Saturday",
   ];
   const today = daysOfWeek[currentDate.getDay()];
+  const tomorrow = daysOfWeek[currentDate.getDay() + 1];
+  const milliseconds_per_day = 24 * 60 * 60 * 1000;
 
   const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
+
+  let colorTask = "bg-primary";
 
   switch (renderType) {
     case "To-do":
@@ -109,16 +114,44 @@ function _renderType(
         taskDate.getTime() <= currentDate.getTime() &&
         task.days.includes(today)
       ) {
-        return (
-          <TaskComponent
-            key={task.id}
-            obj={task}
-            setTask={setTask}
-            setShowModal={setShowModal}
-            setToModify={setToModify}
-            setReload={setReload}
-            setCompleted={setCompleted}
-          />
+        if (task.priority === "High") {
+          colorTask = "bg-red-600";
+        } else if (task.priority === "Medium") {
+          colorTask = "bg-yellow-500";
+        }
+
+        return _renderStatus(
+          task,
+          colorTask,
+          completed,
+          setTask,
+          setShowModal,
+          setToModify,
+          setReload,
+          setCompleted
+        );
+      }
+      break;
+    case "Tomorrow":
+      if (
+        taskDate.getTime() <= currentDate.getTime() + milliseconds_per_day &&
+        task.days.includes(tomorrow)
+      ) {
+        if (task.priority === "High") {
+          colorTask = "bg-red-600";
+        } else if (task.priority === "Medium") {
+          colorTask = "bg-yellow-500";
+        }
+
+        return _renderStatus(
+          task,
+          colorTask,
+          completed,
+          setTask,
+          setShowModal,
+          setToModify,
+          setReload,
+          setCompleted
         );
       }
       break;
@@ -127,26 +160,33 @@ function _renderType(
         taskDate.getTime() > currentDate.getTime() ||
         !task.days.includes(today)
       ) {
-        return (
-          <TaskComponent
-            key={task.id}
-            obj={task}
-            setTask={setTask}
-            setShowModal={setShowModal}
-            setToModify={setToModify}
-            setReload={setReload}
-            setCompleted={setCompleted}
-          />
+        if (task.priority === "High") {
+          colorTask = "bg-red-600 bg-opacity-50";
+        } else if (task.priority === "Medium") {
+          colorTask = "bg-yellow-500 bg-opacity-50";
+        } else {
+          colorTask = "bg-slate-700";
+        }
+
+        return _renderStatus(
+          task,
+          colorTask,
+          completed,
+          setTask,
+          setShowModal,
+          setToModify,
+          setReload,
+          setCompleted
         );
       }
       break;
   }
 }
 
-export function renderTask(
+function _renderStatus(
   task: Task,
+  colorTask: string,
   completed: boolean,
-  renderType: "To-do" | "Future",
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   setToModify: React.Dispatch<React.SetStateAction<boolean>>,
@@ -155,26 +195,32 @@ export function renderTask(
 ) {
   if (completed) {
     if (task.status === "Completed") {
-      return _renderType(
-        task,
-        renderType,
-        setTask,
-        setShowModal,
-        setToModify,
-        setReload,
-        setCompleted
+      return (
+        <TaskComponent
+          key={task.id}
+          obj={task}
+          colorTask="bg-green-600"
+          setTask={setTask}
+          setShowModal={setShowModal}
+          setToModify={setToModify}
+          setReload={setReload}
+          setCompleted={setCompleted}
+        />
       );
     }
   } else {
     if (task.status !== "Completed") {
-      return _renderType(
-        task,
-        renderType,
-        setTask,
-        setShowModal,
-        setToModify,
-        setReload,
-        setCompleted
+      return (
+        <TaskComponent
+          key={task.id}
+          obj={task}
+          colorTask={colorTask}
+          setTask={setTask}
+          setShowModal={setShowModal}
+          setToModify={setToModify}
+          setReload={setReload}
+          setCompleted={setCompleted}
+        />
       );
     }
   }
