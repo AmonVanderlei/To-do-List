@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
@@ -23,6 +23,7 @@ function TaskComponent({
   setReload,
   setCompleted,
 }: Props) {
+  const [color, setColor] = useState<string>("bg-yellow-500");
   const [readMore, setReadMore] = useState<boolean>(false);
   const currentDate = new Date();
   const daysOfWeek = [
@@ -36,7 +37,6 @@ function TaskComponent({
   ];
   const today = daysOfWeek[currentDate.getDay()];
   const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
-  const color = colorTask || "bg-yellow-500";
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
@@ -51,6 +51,10 @@ function TaskComponent({
       setReadMore(true);
     }
   };
+
+  useEffect(() => {
+    setColor(colorTask);
+  }, [colorTask]);
 
   return (
     <>
