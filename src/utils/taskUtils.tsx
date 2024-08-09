@@ -119,6 +119,7 @@ export function renderTask(
         return _renderStatus(
           task,
           completed,
+          renderType,
           setTask,
           setShowModal,
           setToModify,
@@ -132,14 +133,17 @@ export function renderTask(
         taskDate.getTime() <= tomorrowDate.getTime() &&
         task.days.includes(tomorrow)
       ) {
-        return _renderStatus(
-          task,
-          completed,
-          setTask,
-          setShowModal,
-          setToModify,
-          setReload,
-          setCompleted
+        return (
+          <TaskComponent
+            key={task.id}
+            obj={task}
+            setTask={setTask}
+            setShowModal={setShowModal}
+            setToModify={setToModify}
+            setReload={setReload}
+            setCompleted={setCompleted}
+            renderType={renderType}
+          />
         );
       }
       break;
@@ -148,14 +152,17 @@ export function renderTask(
         taskDate.getTime() > currentDate.getTime() ||
         !task.days.includes(today)
       ) {
-        return _renderStatus(
-          task,
-          completed,
-          setTask,
-          setShowModal,
-          setToModify,
-          setReload,
-          setCompleted
+        return (
+          <TaskComponent
+            key={task.id}
+            obj={task}
+            setTask={setTask}
+            setShowModal={setShowModal}
+            setToModify={setToModify}
+            setReload={setReload}
+            setCompleted={setCompleted}
+            renderType={renderType}
+          />
         );
       }
       break;
@@ -165,6 +172,7 @@ export function renderTask(
 function _renderStatus(
   task: Task,
   completed: boolean,
+  renderType: "To-do" | "Future" | "Tomorrow",
   setTask: React.Dispatch<React.SetStateAction<Task | null>>,
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>,
   setToModify: React.Dispatch<React.SetStateAction<boolean>>,
@@ -182,6 +190,7 @@ function _renderStatus(
           setToModify={setToModify}
           setReload={setReload}
           setCompleted={setCompleted}
+          renderType={renderType}
         />
       );
     }
@@ -196,6 +205,7 @@ function _renderStatus(
           setToModify={setToModify}
           setReload={setReload}
           setCompleted={setCompleted}
+          renderType={renderType}
         />
       );
     }

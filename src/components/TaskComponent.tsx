@@ -9,9 +9,10 @@ function bgColor(
   today: string,
   tomorrowDate: Date,
   tomorrow: string,
-  taskDate: Date
+  taskDate: Date,
+  renderType: "To-do" | "Future" | "Tomorrow"
 ): string {
-  if (task.status === "Completed") {
+  if (renderType === "To-do" && task.status === "Completed") {
     return "bg-green-600";
   } else {
     if (
@@ -46,6 +47,7 @@ interface Props {
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   setCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+  renderType: "To-do" | "Future" | "Tomorrow";
 }
 
 function TaskComponent({
@@ -55,6 +57,7 @@ function TaskComponent({
   setToModify,
   setReload,
   setCompleted,
+  renderType,
 }: Props) {
   const [readMore, setReadMore] = useState<boolean>(false);
   const currentDate = new Date();
@@ -77,7 +80,7 @@ function TaskComponent({
   const tomorrowDate = new Date(currentDate);
   tomorrowDate.setDate(currentDate.getDate() + 1);
 
-  const color = bgColor(obj, today, tomorrowDate, tomorrow, taskDate);
+  const color = bgColor(obj, today, tomorrowDate, tomorrow, taskDate, renderType);
 
   const descriptionLines = obj.description.split("\n").map((line, index) => {
     return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;

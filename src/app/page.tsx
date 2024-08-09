@@ -41,6 +41,12 @@ export default function Home() {
     }
   }, [reload]);
 
+  useEffect(() => {
+    if (renderType != "To-do") {
+      setCompleted(false);
+    }
+  }, [renderType]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearchValue(value);
@@ -93,7 +99,9 @@ export default function Home() {
         <div className="flex flex-wrap justify-around items-center my-4">
           <select
             onChange={handleRenderType}
-            className="select select-bordered w-1/2 min-w-32 h-10"
+            className={clsx("select select-bordered w-1/2 min-w-32 h-10", {
+              "w-11/12": renderType != "To-do",
+            })}
           >
             <option value="To-do" selected>
               Tasks To Do
@@ -105,6 +113,7 @@ export default function Home() {
           <label
             className={clsx("swap border rounded h-10 px-2", {
               "text-success": completed,
+              "!hidden": renderType != "To-do",
             })}
           >
             <input type="checkbox" onClick={handleClick} />
