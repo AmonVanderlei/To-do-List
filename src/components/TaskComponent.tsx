@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Task } from "../types/Task";
 import ModifyButton from "./ModifyButton";
@@ -60,6 +60,10 @@ function TaskComponent({
   renderType,
 }: Props) {
   const [readMore, setReadMore] = useState<boolean>(false);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const maxHeight = 96;
+
   const currentDate = new Date();
   const daysOfWeek = [
     "Sunday",
@@ -80,21 +84,26 @@ function TaskComponent({
   const tomorrowDate = new Date(currentDate);
   tomorrowDate.setDate(currentDate.getDate() + 1);
 
-  const color = bgColor(obj, today, tomorrowDate, tomorrow, taskDate, renderType);
+  const color = bgColor(
+    obj,
+    today,
+    tomorrowDate,
+    tomorrow,
+    taskDate,
+    renderType
+  );
 
-  const descriptionLines = obj.description.split("\n").map((line, index) => {
-    return <p key={index}>{line.trim() === "" ? "\u00A0" : line} </p>;
-  });
-
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-
-    if (readMore) {
-      setReadMore(false);
-    } else {
-      setReadMore(true);
-    }
+  const toggleReadMore = () => {
+    setReadMore(!readMore);
   };
+
+  useEffect(() => {
+    if (contentRef.current && contentRef.current.scrollHeight > maxHeight) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  }, [contentRef, maxHeight, obj]);
 
   return (
     <>
@@ -103,19 +112,20 @@ function TaskComponent({
           <h2 className="card-title">{obj.title}</h2>
 
           <div
-            className={clsx({
-              "": readMore,
-              "max-h-24 overflow-hidden": !readMore,
+            ref={contentRef}
+            className={clsx("whitespace-pre-wrap overflow-x-auto", {
+              "overflow-y-hidden": !readMore,
             })}
+            style={{ maxHeight: readMore ? "none" : `${maxHeight}px` }}
           >
-            {descriptionLines}
+            {obj.description}
           </div>
 
-          {descriptionLines.length >= 4 && (
+          {showButton && (
             <button
               className="font-bold underline hover:text-blue-800"
               type="button"
-              onClick={handleClick}
+              onClick={toggleReadMore}
             >
               {readMore ? "Ler menos" : "Ler mais"}
             </button>

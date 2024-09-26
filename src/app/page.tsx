@@ -103,9 +103,7 @@ export default function Home() {
               "w-11/12": renderType != "To-do",
             })}
           >
-            <option value="To-do" selected>
-              Tasks To Do
-            </option>
+            <option value="To-do">Tasks To Do</option>
             <option value="Future">Future Tasks</option>
             <option value="Tomorrow">Tomorrow Tasks</option>
           </select>
