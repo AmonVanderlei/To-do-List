@@ -18,32 +18,22 @@ function _sortTasks(tasks: Task[]): Task[] {
   let highPriorityTasks: Task[] = [];
   let mediumPriorityTasks: Task[] = [];
   let lowPriorityTasks: Task[] = [];
-  let completedTasks: Task[] = [];
 
   tasks.forEach((task) => {
-    if (task.status === "Completed") {
-      completedTasks.push(task);
-    } else {
-      switch (task.priority) {
-        case "High":
-          highPriorityTasks.push(task);
-          break;
-        case "Medium":
-          mediumPriorityTasks.push(task);
-          break;
-        default:
-          lowPriorityTasks.push(task);
-          break;
-      }
+    switch (task.priority) {
+      case "High":
+        highPriorityTasks.push(task);
+        break;
+      case "Medium":
+        mediumPriorityTasks.push(task);
+        break;
+      default:
+        lowPriorityTasks.push(task);
+        break;
     }
   });
 
-  return [
-    ...highPriorityTasks,
-    ...mediumPriorityTasks,
-    ...lowPriorityTasks,
-    ...completedTasks,
-  ];
+  return [...highPriorityTasks, ...mediumPriorityTasks, ...lowPriorityTasks];
 }
 
 function _updateTasks(tasks: Task[]) {
@@ -78,6 +68,13 @@ export function getLocalStorage() {
     return sortedTasks;
   }
   return [];
+}
+
+export function setLocalStorageSorted(tasks: Task[]) {
+  const updatedTasks = _updateTasks(tasks);
+  const sortedTasks: Task[] = _sortTasks(updatedTasks);
+
+  localStorage.setItem("tasks", JSON.stringify(sortedTasks));
 }
 
 export function renderTask(

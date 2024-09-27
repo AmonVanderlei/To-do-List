@@ -1,5 +1,5 @@
 import { Task } from "../types/Task";
-import { deleteTask } from "@/utils/taskUtils";
+import { deleteTask, setLocalStorageSorted } from "@/utils/taskUtils";
 
 interface Props {
   obj: Task;
@@ -25,7 +25,8 @@ function DoneButton({ obj, setReload, setCompleted }: Props) {
     if (storedTasks != null) {
       let tasks = JSON.parse(storedTasks);
       tasks.push(modifiedTask);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+
+      setLocalStorageSorted(tasks);
     } else {
       localStorage.setItem("tasks", JSON.stringify([modifiedTask]));
     }
