@@ -1,5 +1,5 @@
 import { Task } from "../types/Task";
-import { deleteTask, setLocalStorageSorted } from "@/utils/taskUtils";
+import { setLocalStorageSorted } from "@/utils/taskUtils";
 
 interface Props {
   obj: Task;
@@ -10,25 +10,26 @@ interface Props {
 function DoneButton({ obj, setReload, setCompleted }: Props) {
   const handleDone: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const { value } = e.currentTarget as HTMLButtonElement;
-    const modifiedTask: Task = JSON.parse(value);
-
-    deleteTask(modifiedTask);
-
-    if (obj.status === "Completed") {
-      modifiedTask.status = "To-do";
-    } else {
-      modifiedTask.status = "Completed";
-    }
+    const taskToModify: Task = JSON.parse(value);
 
     const storedTasks = localStorage.getItem("tasks");
 
     if (storedTasks != null) {
       let tasks = JSON.parse(storedTasks);
-      tasks.push(modifiedTask);
+
+      tasks.forEach((oldTask: Task) => {
+        if (oldTask.id === taskToModify.id) {
+          if (oldTask.status === "Completed") {
+            oldTask.status = "To-do";
+          } else {
+            oldTask.status = "Completed";
+          }
+        }
+      });
 
       setLocalStorageSorted(tasks);
     } else {
-      localStorage.setItem("tasks", JSON.stringify([modifiedTask]));
+      localStorage.setItem("tasks", JSON.stringify([taskToModify]));
     }
 
     setCompleted(false);

@@ -5,7 +5,7 @@ import { Task } from "../types/Task";
 import Days from "@/components/Days";
 import { Value } from "@natscale/react-calendar/dist/utils/types";
 import DeleteButton from "@/components/DeleteButton";
-import { deleteTask, setLocalStorageSorted } from "@/utils/taskUtils";
+import { setLocalStorageSorted } from "@/utils/taskUtils";
 
 interface FormProps {
   toModify: boolean;
@@ -89,11 +89,24 @@ const TaskForm = ({
       let storedTasks = localStorage.getItem("tasks");
 
       if (storedTasks != null) {
-        deleteTask(taskToModify);
-        const storedTasksAfterDelete = localStorage.getItem("tasks") as string;
-        let tasks = JSON.parse(storedTasksAfterDelete);
-        tasks.push(formData);
-        setLocalStorageSorted(tasks);
+        let tasks = JSON.parse(storedTasks);
+
+        if (toModify) {
+          tasks.forEach((oldTask: Task) => {
+            if (oldTask.id === formData.id) {
+              oldTask.title = formData.title;
+              oldTask.status = formData.status;
+              oldTask.priority = formData.priority;
+              oldTask.inicialDate = formData.inicialDate;
+              oldTask.days = formData.days;
+              oldTask.description = formData.description;
+            }
+          });
+          setLocalStorageSorted(tasks);
+        } else {
+          tasks.push(formData);
+          setLocalStorageSorted(tasks);
+        }
       } else {
         localStorage.setItem("tasks", JSON.stringify([formData]));
       }
