@@ -34,7 +34,7 @@ function DeleteButton({
   return (
     <button
       value={JSON.stringify(obj)}
-      className={`btn btn-outline btn-error mt-2 w-4/5 ${className}`}
+      className={`btn btn-outline btn-error mt-2 ${className}`}
       onClick={handleDelete}
     >
       Delete

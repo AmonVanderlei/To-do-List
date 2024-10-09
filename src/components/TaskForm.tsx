@@ -222,7 +222,11 @@ const TaskForm = ({
             className="btn btn-outline btn-error mt-2 w-full"
             onClick={(e) => {
               e.preventDefault();
+
+              setTask(null);
+              setToModify(false);
               setShowModal(false);
+              setReload((prevReload) => !prevReload);
             }}
           >
             Cancel
@@ -233,15 +237,30 @@ const TaskForm = ({
           <button type="submit" className="btn btn-outline mt-8 mb-2 w-full">
             Done
           </button>
-          <DeleteButton
-            key={formData.id}
-            obj={formData}
-            className="!w-full"
-            setReload={setReload}
-            setShowModal={setShowModal}
-            setTask={setTask}
-            setToModify={setToModify}
-          />
+          <div className="flex justify-between w-full">
+            <DeleteButton
+              key={formData.id}
+              obj={formData}
+              className="w-1/2"
+              setReload={setReload}
+              setShowModal={setShowModal}
+              setTask={setTask}
+              setToModify={setToModify}
+            />
+            <button
+              className="btn btn-primary mt-2 w-5/12"
+              onClick={(e) => {
+                e.preventDefault();
+
+                setTask(null);
+                setToModify(false);
+                setShowModal(false);
+                setReload((prevReload) => !prevReload);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </>
       )}
     </form>
