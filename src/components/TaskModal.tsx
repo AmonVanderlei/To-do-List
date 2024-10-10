@@ -7,6 +7,7 @@ interface ModalProps {
   task: Task | null;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,6 +19,7 @@ const TaskModal = ({
   task,
   showModal,
   setShowModal,
+  setShowDeleteModal,
   setReload,
   setTask,
   setToModify,
@@ -39,6 +41,7 @@ const TaskModal = ({
             task={task}
             showModal={showModal}
             setShowModal={setShowModal}
+            setShowDeleteModal={setShowDeleteModal}
             setReload={setReload}
             setTask={setTask}
             setToModify={setToModify}

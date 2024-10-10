@@ -1,34 +1,16 @@
 import { Task } from "../types/Task";
-import { deleteTask } from "@/utils/taskUtils";
 
 interface Props {
   obj: Task;
   className?: string;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
-  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DeleteButton({
-  obj,
-  className,
-  setReload,
-  setShowModal,
-  setTask,
-  setToModify,
-}: Props) {
+function DeleteButton({ obj, className, setShowDeleteModal }: Props) {
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    const { value } = e.currentTarget as HTMLButtonElement;
-    const deletedTask: Task = JSON.parse(value);
 
-    deleteTask(deletedTask);
-
-    setTask(null);
-    setToModify(false);
-    setShowModal(false);
-    setReload((prevReload) => !prevReload);
+    setShowDeleteModal(true);
   };
 
   return (

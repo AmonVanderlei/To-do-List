@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { Task } from "@/types/Task";
 import { getLocalStorage, renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
+import DeleteModal from "@/components/DeleteModal";
 import ErrorAlert from "@/components/ErrorAlert";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
     "To-do"
   );
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [task, setTask] = useState<Task | null>(null);
   const [toModify, setToModify] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(true);
@@ -141,10 +143,21 @@ export default function Home() {
         task={task}
         showModal={showModal}
         setShowModal={setShowModal}
+        setShowDeleteModal={setShowDeleteModal}
         setReload={setReload}
         setTask={setTask}
         setToModify={setToModify}
         setShowError={setShowError}
+      />
+
+      <DeleteModal
+        task={task}
+        showDeleteModal={showDeleteModal}
+        setShowDeleteModal={setShowDeleteModal}
+        setShowModal={setShowModal}
+        setReload={setReload}
+        setTask={setTask}
+        setToModify={setToModify}
       />
 
       <ErrorAlert showError={showError} />

@@ -12,6 +12,7 @@ interface FormProps {
   task: Task | null;
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
   setTask: React.Dispatch<React.SetStateAction<Task | null>>;
   setToModify: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +24,7 @@ const TaskForm = ({
   task,
   showModal,
   setShowModal,
+  setShowDeleteModal,
   setReload,
   setTask,
   setToModify,
@@ -242,10 +244,7 @@ const TaskForm = ({
               key={formData.id}
               obj={formData}
               className="w-1/2"
-              setReload={setReload}
-              setShowModal={setShowModal}
-              setTask={setTask}
-              setToModify={setToModify}
+              setShowDeleteModal={setShowDeleteModal}
             />
             <button
               className="btn btn-primary mt-2 w-5/12"
