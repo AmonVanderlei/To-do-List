@@ -60,7 +60,7 @@ const DeleteModal = ({
           </svg>
           <h1 className="text-4xl my-4">Are you sure?</h1>
           <p className="text-center mb-4">
-            Do you really want to delete this task? It can't be undone.
+            Do you really want to delete this task? It can&apos;t be undone.
           </p>
           <div className="flex justify-between w-full">
             <button
