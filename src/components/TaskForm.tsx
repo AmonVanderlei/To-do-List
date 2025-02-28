@@ -158,6 +158,17 @@ const TaskForm = () => {
             useDarkMode
           />
         </div>
+        <div className="flex">
+          <p className="mr-2">Chosen date: </p>
+          <p>
+            {calendarValue?.toLocaleString().includes("T")
+              ? calendarValue
+                  ?.toLocaleString()
+                  .split("T")[0]
+                  .replaceAll("-", "/")
+              : calendarValue?.toLocaleString().split(",")[0]}
+          </p>
+        </div>
       </label>
 
       {/* Days */}

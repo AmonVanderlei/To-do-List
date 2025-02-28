@@ -90,7 +90,6 @@ export default function TaskContextProvider({ children }: Props) {
       try {
         const tasksData = await getDocuments("tasks", user.uid);
 
-        // Update the tasks
         setTasks(sortTasks(tasksData));
       } catch (error) {
         toast.error("Error fetching data from firebase" + error);
