@@ -31,38 +31,25 @@ const TaskForm = () => {
         title: "",
         status: "To-do",
         priority: "Low",
-        inicialDate: "",
+        inicialDate: new Date(),
         days: [],
         description: "",
       };
   const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(
-    task ? toDate(task?.inicialDate) : undefined
+    task ? task?.inicialDate : undefined
   );
 
-  // Turn string 'dd/mm/yyyy' in a Date
-  function toDate(dateString: string): Date {
-    const [day, month, year] = dateString.split("/").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day + 1));
-    return date;
-  }
-
-  // Turn calendar Date in a 'dd/mm/yyyy' format to form
+  // Set the date
   const onCalendarChange = useCallback(
     (value: any) => {
       setCalendarValue(value);
 
       const date = new Date(value);
 
-      const day = date.getUTCDate().toString().padStart(2, "0");
-      const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
-      const year = date.getUTCFullYear().toString();
-
-      const formattedDate = `${day}/${month}/${year}`;
-
       setFormData((prevData) => ({
         ...prevData,
-        inicialDate: formattedDate,
+        inicialDate: date,
       }));
     },
     [setCalendarValue]
@@ -111,7 +98,7 @@ const TaskForm = () => {
   // When the form changes, set the calendar value
   useEffect(() => {
     if (formData.inicialDate) {
-      setCalendarValue(toDate(formData.inicialDate));
+      setCalendarValue(formData.inicialDate);
     }
   }, [formData]);
 

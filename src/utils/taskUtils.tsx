@@ -53,7 +53,7 @@ export function renderTask(
   if (!dates) {
     return;
   }
-  const taskDate = new Date(task.inicialDate.split("/").reverse().join("/"));
+  const taskDate: Date = new Date(task.inicialDate);
   taskDate.setHours(0, 0, 0, 0);
 
   switch (renderType) {

@@ -22,7 +22,7 @@ function TaskComponent({ obj, bgColor }: Props) {
   const contentRef = useRef<HTMLDivElement>(null);
   const maxHeight = 96;
 
-  const taskDate = new Date(obj.inicialDate.split("/").reverse().join("/"));
+  const taskDate = obj.inicialDate;
   taskDate.setHours(0, 0, 0, 0);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function TaskComponent({ obj, bgColor }: Props) {
             <>
               <div className="card-actions justify-between">
                 <p className="m-auto">
-                  <b>Inicial Date:</b> {obj.inicialDate}
+                  <b>Inicial Date:</b> {obj.inicialDate.toLocaleDateString()}
                 </p>
               </div>
               <div className="card-actions justify-end">

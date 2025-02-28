@@ -1,5 +1,11 @@
 "use client";
 import { Task } from "@/types/Task";
+import {
+  addDocument,
+  deleteDocument,
+  getDocuments,
+  updateDocument,
+} from "@/utils/data";
 import { sortTasks } from "@/utils/taskUtils";
 import {
   createContext,
@@ -67,7 +73,24 @@ export default function TaskContextProvider({ children }: Props) {
     "Friday",
     "Saturday",
   ];
+
   useEffect(() => {
+    // if (!user) return;
+
+    // Take all the tasks from firebase
+    const fetchData = async () => {
+      try {
+        const tasksData = await getDocuments("tasks", "1"); //, user.uid);
+
+        setTasks(sortTasks(tasksData));
+      } catch (error) {
+        toast.error("Error fetching data from firebase" + error);
+      }
+    };
+
+    fetchData();
+
+    // Set the dates
     const currentDate = new Date();
     const tomorrowIndex = (currentDate.getDay() + 1) % 7;
 
@@ -80,20 +103,16 @@ export default function TaskContextProvider({ children }: Props) {
     tomorrowDate.setDate(currentDate.getDate() + 1);
 
     setDates({ today, currentDate, tomorrow, tomorrowDate });
-
-    // Take all the tasks from firebase
-    // const tasksData = await getDocuments("tasks", user.uid);
-    // setTasks(sortTasks(updateTasks(taskData)));
-  }, []);
+  }, []); //user]);
 
   async function addTask(task: Task) {
     const { id, ...taskWithoutId } = task;
     // Add to firebase
-    const newId = new Date().getTime().toString(); //await toast.promise(addDocument("tasks", task), {
-    //   pending: messages.loading.add,
-    //   success: messages.success.add,
-    //   error: messages.error.something,
-    // });
+    const newId = await toast.promise(addDocument("tasks", task), {
+      pending: "Adding new task...",
+      success: "Task successfully added!",
+      error: "Sorry! Something wrong happened.",
+    });
 
     // Add locally
     setTasks((prevState) => {
@@ -109,12 +128,18 @@ export default function TaskContextProvider({ children }: Props) {
   }
 
   function updateTask(task: Task) {
+    // Force inicialDate to be of type Date
+    task.inicialDate =
+      task.inicialDate instanceof Date
+        ? task.inicialDate
+        : new Date(task.inicialDate);
+
     // Update on firebase
-    // toast.promise(updateDocument("tasks", task), {
-    //   pending: messages.loading.update,
-    //   success: messages.success.update,
-    //   error: messages.error.something,
-    // });
+    toast.promise(updateDocument("tasks", task), {
+      pending: "Updating task...",
+      success: "Task successfully updated!",
+      error: "Sorry! Something wrong happened.",
+    });
 
     // Update locally
     setTasks((prevState) => {
@@ -171,11 +196,11 @@ export default function TaskContextProvider({ children }: Props) {
         switch (reason) {
           case "delete":
             // Delete on firebase
-            // toast.promise(deleteDocument("tasks", task.id), {
-            //   pending: messages.loading.delete,
-            //   success: messages.success.delete,
-            //   error: messages.error.something,
-            // });
+            toast.promise(deleteDocument("tasks", task.id), {
+              pending: "Deleting task...",
+              success: "Task successfully deleted!",
+              error: "Sorry! Something wrong happened.",
+            });
 
             // Delete locally
             setTasks((prevState) => {
