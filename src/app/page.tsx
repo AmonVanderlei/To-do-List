@@ -6,6 +6,11 @@ import { Task } from "@/types/Task";
 import { renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
 import { TaskContext } from "@/contexts/taskContext";
+import { AuthContext } from "@/contexts/authContext";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { LiaInfoSolid } from "react-icons/lia";
+import { VscSignOut } from "react-icons/vsc";
 
 export default function Home() {
   const taskContext = useContext(TaskContext);
@@ -21,6 +26,12 @@ export default function Home() {
     setCompleted,
     setShowModal,
   } = taskContext;
+
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within a AuthContextProvider");
+  }
+  const { user, loading, logout } = authContext;
 
   // Filter tasks
   const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks ?? []);
@@ -38,9 +49,73 @@ export default function Home() {
     }
   }, [tasks, search]);
 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth");
+    }
+  }, [loading, user, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="grow w-full h-full flex items-center justify-center">
+        <p className="text-xl">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <main className="flex flex-col items-center justify-between py-10 px-4">
-      <div className="flex flex-col	w-full">
+    <main>
+      <div className="navbar bg-base-300 rounded-b-lg">
+        <div className="flex-1 px-2 lg:flex-none">
+          <a className="text-lg font-bold ml-4">Habit Maker</a>
+        </div>
+        <div className="flex flex-1 justify-end px-2">
+          <div className="flex items-stretch">
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost rounded-btn"
+              >
+                {user?.photoURL && (
+                  <Image
+                    src={user?.photoURL as string}
+                    alt="Profile picture"
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                )}
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu dropdown-content bg-base-100 rounded-box z-[1] mt-4 w-52 p-2 shadow"
+              >
+                <li>
+                  <a
+                    href="https://github.com/AmonVanderlei/To-do-List"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex gap-2"
+                  >
+                    <LiaInfoSolid className="text-3xl" /> About
+                  </a>
+                </li>
+                <li className="flex gap-2" onClick={logout}>
+                  <p className="flex gap-2">
+                    <VscSignOut className="text-3xl" />
+                    Log Out
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col	w-full py-10 px-4">
         <div className="flex flex-wrap items-center justify-around w-full">
           <h1 className="text-3xl px-4">Tasks</h1>
           <button

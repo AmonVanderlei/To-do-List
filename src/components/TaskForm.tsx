@@ -7,6 +7,7 @@ import { Value } from "@natscale/react-calendar/dist/utils/types";
 import DeleteButton from "@/components/DeleteButton";
 import { TaskContext } from "@/contexts/taskContext";
 import { toast } from "react-toastify";
+import { AuthContext } from "@/contexts/authContext";
 
 const TaskForm = () => {
   const taskContext = useContext(TaskContext);
@@ -24,6 +25,12 @@ const TaskForm = () => {
     updateTask,
   } = taskContext;
 
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within a AuthContextProvider");
+  }
+  const { user } = authContext;
+
   const taskToModify: Task = task
     ? task
     : {
@@ -34,6 +41,7 @@ const TaskForm = () => {
         inicialDate: new Date(),
         days: [],
         description: "",
+        uid: user?.uid || "",
       };
   const [formData, setFormData] = useState<Task>(taskToModify);
   const [calendarValue, setCalendarValue] = useState<Value | undefined>(

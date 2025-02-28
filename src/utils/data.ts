@@ -45,9 +45,9 @@ export async function deleteDocument(col: string, objId: string) {
 export async function getDocuments(col: string, uid: string): Promise<Task[]> {
   try {
     const collectionRef = collection(db, col);
-    // const q = query(collectionRef, where("uid", "==", uid));
+    const q = query(collectionRef, where("uid", "==", uid));
 
-    const docsSnap = await getDocs(collectionRef);
+    const docsSnap = await getDocs(q);
 
     return docsSnap.docs.map((doc) => {
       const data = doc.data();
@@ -59,10 +59,10 @@ export async function getDocuments(col: string, uid: string): Promise<Task[]> {
         inicialDate: data.inicialDate.toDate(),
         days: data.days as string[],
         description: data.description as string,
+        uid: data.uid,
       } as Task;
     });
   } catch (e) {
-    console.log(e);
     return [];
   }
 }

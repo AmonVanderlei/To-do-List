@@ -11,10 +11,12 @@ import {
   createContext,
   Dispatch,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
 import { toast, ToastContentProps } from "react-toastify";
+import { AuthContext } from "./authContext";
 
 export interface TaskContextType {
   tasks: Task[] | null;
@@ -47,6 +49,12 @@ interface Props {
 }
 
 export default function TaskContextProvider({ children }: Props) {
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("AuthContext must be used within a AuthContextProvider");
+  }
+  const { user } = authContext;
+
   const [tasks, setTasks] = useState<Task[] | null>(null);
   const [renderType, setRenderType] = useState<"To-do" | "Future" | "Tomorrow">(
     "To-do"
@@ -75,13 +83,14 @@ export default function TaskContextProvider({ children }: Props) {
   ];
 
   useEffect(() => {
-    // if (!user) return;
+    if (!user) return;
 
     // Take all the tasks from firebase
     const fetchData = async () => {
       try {
-        const tasksData = await getDocuments("tasks", "1"); //, user.uid);
+        const tasksData = await getDocuments("tasks", user.uid);
 
+        // Update the tasks
         setTasks(sortTasks(tasksData));
       } catch (error) {
         toast.error("Error fetching data from firebase" + error);
@@ -103,7 +112,7 @@ export default function TaskContextProvider({ children }: Props) {
     tomorrowDate.setDate(currentDate.getDate() + 1);
 
     setDates({ today, currentDate, tomorrow, tomorrowDate });
-  }, []); //user]);
+  }, [user]);
 
   async function addTask(task: Task) {
     const { id, ...taskWithoutId } = task;

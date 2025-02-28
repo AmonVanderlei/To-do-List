@@ -9,4 +9,5 @@ export interface Task {
   inicialDate: Date;
   days: string[];
   description: string;
+  uid: string;
 }
