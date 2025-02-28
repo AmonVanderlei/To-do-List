@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import TaskContextProvider from "@/contexts/taskContext";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +37,18 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.className}`}>
+        <ToastContainer
+          toastClassName="max-w-[90vw] mt-1 mr-2"
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="dark"
+        />
         <div className="navbar bg-base-100 flex-wrap">
           <div className="flex-1 justify-center">
             <Link className="btn btn-ghost !text-2xl" href="/">
@@ -43,7 +57,9 @@ export default function RootLayout({
           </div>
         </div>
 
-        <div className="min-h-screen pb-8">{children}</div>
+        <TaskContextProvider>
+          <div className="min-h-screen pb-8">{children}</div>
+        </TaskContextProvider>
       </body>
     </html>
   );

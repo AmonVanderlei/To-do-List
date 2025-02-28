@@ -1,30 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import TaskForm from "./TaskForm";
-import { Task } from "@/types/Task";
+import { TaskContext } from "@/contexts/taskContext";
 
-interface ModalProps {
-  toModify: boolean;
-  task: Task | null;
-  showModal: boolean;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
-  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
-  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowError: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const TaskModal = () => {
+  const taskContext = useContext(TaskContext);
+  if (!taskContext) {
+    throw new Error("TaskContext must be used within a TaskContextProvider");
+  }
+  const { showModal, setShowModal } = taskContext;
 
-const TaskModal = ({
-  toModify,
-  task,
-  showModal,
-  setShowModal,
-  setShowDeleteModal,
-  setReload,
-  setTask,
-  setToModify,
-  setShowError,
-}: ModalProps) => {
   return (
     <>
       <input
@@ -36,17 +20,7 @@ const TaskModal = ({
       />
       <div className="modal" role="dialog">
         <div className="modal-box min-w-full min-h-screen !rounded-none">
-          <TaskForm
-            toModify={toModify}
-            task={task}
-            showModal={showModal}
-            setShowModal={setShowModal}
-            setShowDeleteModal={setShowDeleteModal}
-            setReload={setReload}
-            setTask={setTask}
-            setToModify={setToModify}
-            setShowError={setShowError}
-          />
+          <TaskForm />
         </div>
       </div>
     </>

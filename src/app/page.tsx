@@ -1,76 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import clsx from "clsx";
 import { Task } from "@/types/Task";
-import { getLocalStorage, renderTask } from "@/utils/taskUtils";
+import { renderTask } from "@/utils/taskUtils";
 import TaskModal from "@/components/TaskModal";
-import DeleteModal from "@/components/DeleteModal";
-import ErrorAlert from "@/components/ErrorAlert";
+import { TaskContext } from "@/contexts/taskContext";
 
 export default function Home() {
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
-  const [completed, setCompleted] = useState<boolean>(false);
-  const [renderType, setRenderType] = useState<"To-do" | "Future" | "Tomorrow">(
-    "To-do"
-  );
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [task, setTask] = useState<Task | null>(null);
-  const [toModify, setToModify] = useState<boolean>(false);
-  const [reload, setReload] = useState<boolean>(true);
-  const [showError, setShowError] = useState<boolean>(false);
+  const taskContext = useContext(TaskContext);
+  if (!taskContext) {
+    throw new Error("TaskContext must be used within a TaskContextProvider");
+  }
+  const {
+    tasks,
+    dates,
+    renderType,
+    setRenderType,
+    completed,
+    setCompleted,
+    setShowModal,
+  } = taskContext;
+
+  // Filter tasks
+  const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks ?? []);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (showError) {
-      const timer = setTimeout(() => {
-        setShowError(false);
-      }, 2000);
-
-      return () => clearTimeout(timer);
+    if (tasks?.length && tasks?.length > 0) {
+      setFilteredTasks(
+        tasks.filter(
+          (task) =>
+            task.title.toLowerCase().includes(search.toLowerCase()) ||
+            task.description.toLowerCase().includes(search.toLowerCase())
+        )
+      );
     }
-  }, [showError]);
-
-  useEffect(() => {
-    if (reload) {
-      let storedTasks: Task[] = getLocalStorage();
-
-      setTasks(storedTasks);
-      setFilteredTasks(storedTasks);
-      setReload(false);
-    }
-  }, [reload]);
-
-  useEffect(() => {
-    if (renderType != "To-do") {
-      setCompleted(false);
-    }
-  }, [renderType]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setSearchValue(value);
-
-    const newFilteredTasks: Task[] = tasks.filter(
-      (task) =>
-        task.title.toLowerCase().includes(value.toLowerCase()) ||
-        task.description.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setFilteredTasks(newFilteredTasks);
-  };
-
-  const handleClick = () => {
-    setCompleted(!completed);
-  };
-
-  const handleRenderType = (e: any) => {
-    e.preventDefault();
-
-    setRenderType(e.target.value);
-  };
+  }, [tasks, search]);
 
   return (
     <main className="flex flex-col items-center justify-between py-10 px-4">
@@ -91,16 +57,18 @@ export default function Home() {
           <input
             type="text"
             name="search"
-            value={searchValue}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
             className="input input-bordered w-11/12 min-w-32"
-            onChange={handleChange}
           />
         </div>
 
         <div className="flex flex-wrap justify-around items-center my-4">
           <select
-            onChange={handleRenderType}
+            onChange={(e) =>
+              setRenderType(e.target.value as "To-do" | "Future" | "Tomorrow")
+            }
             className={clsx("select select-bordered w-1/2 min-w-32 h-10", {
               "w-11/12": renderType != "To-do",
             })}
@@ -116,51 +84,25 @@ export default function Home() {
               "!hidden": renderType != "To-do",
             })}
           >
-            <input type="checkbox" onClick={handleClick} />
+            <input
+              type="checkbox"
+              onChange={() => setCompleted((prev) => !prev)}
+            />
+
             <div className="swap-on">Completed</div>
             <div className="swap-off">Completed</div>
           </label>
         </div>
 
         <div className="w-full pt-4 px-4">
-          {filteredTasks.map((task) =>
-            renderTask(
-              task,
-              completed,
-              renderType,
-              setTask,
-              setShowModal,
-              setToModify,
-              setReload,
-              setCompleted
-            )
-          )}
+          {dates &&
+            filteredTasks.map((task) =>
+              renderTask(task, renderType, dates, completed)
+            )}
         </div>
       </div>
 
-      <TaskModal
-        toModify={toModify}
-        task={task}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        setShowDeleteModal={setShowDeleteModal}
-        setReload={setReload}
-        setTask={setTask}
-        setToModify={setToModify}
-        setShowError={setShowError}
-      />
-
-      <DeleteModal
-        task={task}
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
-        setShowModal={setShowModal}
-        setReload={setReload}
-        setTask={setTask}
-        setToModify={setToModify}
-      />
-
-      <ErrorAlert showError={showError} />
+      <TaskModal />
     </main>
   );
 }

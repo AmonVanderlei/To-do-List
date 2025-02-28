@@ -1,16 +1,26 @@
+import { useContext } from "react";
 import { Task } from "../types/Task";
+import { TaskContext } from "@/contexts/taskContext";
 
 interface Props {
   obj: Task;
   className?: string;
-  setShowDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function DeleteButton({ obj, className, setShowDeleteModal }: Props) {
+function DeleteButton({ obj, className }: Props) {
+  const taskContext = useContext(TaskContext);
+  if (!taskContext) {
+    throw new Error("TaskContext must be used within a TaskContextProvider");
+  }
+  const { deleteTask } = taskContext;
+
   const handleDelete: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    setShowDeleteModal(true);
+    const { value } = e.currentTarget as HTMLButtonElement;
+    const taskToDelete: Task = JSON.parse(value);
+
+    deleteTask(taskToDelete);
   };
 
   return (

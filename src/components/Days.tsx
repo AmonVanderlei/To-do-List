@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { Task } from "@/types/Task";
 
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 interface DaysProps {
   setFormData: React.Dispatch<React.SetStateAction<Task>>;
   days?: string[];
@@ -13,12 +23,14 @@ function Days({ setFormData, days }: DaysProps) {
   );
   const [allChecked, setAllChecked] = useState<boolean>(false);
 
+  // When the formData days change, change the days in the state
   useEffect(() => {
     if (days !== undefined) {
       setTaskDays(days);
     }
   }, [days]);
 
+  // Control the AllChecked state
   useEffect(() => {
     if (taskDays.length < 7) {
       setAllChecked(false);
@@ -27,6 +39,7 @@ function Days({ setFormData, days }: DaysProps) {
     }
   }, [taskDays]);
 
+  // Add/Remove day when clicked
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     const button = e.target as HTMLButtonElement;
@@ -46,6 +59,7 @@ function Days({ setFormData, days }: DaysProps) {
     }));
   };
 
+  // Add/Remove all days
   const handleMarkAll: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
@@ -89,77 +103,21 @@ function Days({ setFormData, days }: DaysProps) {
   return (
     <div>
       <div className="flex flex-wrap justify-evenly w-full">
-        <button
-          className={clsx(
-            taskDays.includes("Sunday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Sunday"
-        >
-          Sun
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Monday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Monday"
-        >
-          Mon
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Tuesday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Tuesday"
-        >
-          Tue
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Wednesday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Wednesday"
-        >
-          Wed
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Thursday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Thursday"
-        >
-          Thu
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Friday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Friday"
-        >
-          Fri
-        </button>
-        <button
-          className={clsx(
-            taskDays.includes("Saturday") && "!bg-slate-400 !text-gray-800",
-            "btn btn-circle !w-10 !h-10 !min-h-10"
-          )}
-          onClick={handleClick}
-          value="Saturday"
-        >
-          Sat
-        </button>
+        {daysOfWeek.map((day) => (
+          <button
+            key={day}
+            className={clsx(
+              taskDays.includes(day) && "!bg-slate-400 !text-gray-800",
+              "btn btn-circle !w-10 !h-10 !min-h-10"
+            )}
+            onClick={handleClick}
+            value={day}
+          >
+            {day.slice(0, 3)}
+          </button>
+        ))}
       </div>
+
       <button className="text-gray-400 underline" onClick={handleMarkAll}>
         {allChecked ? "Remove all" : "Check all"}
       </button>

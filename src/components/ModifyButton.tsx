@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import { Task } from "../types/Task";
+import { TaskContext } from "@/contexts/taskContext";
 
 interface Props {
   obj: Task;
-  setTask: React.Dispatch<React.SetStateAction<Task | null>>;
-  setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setToModify: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ModifyButton({ obj, setTask, setShowModal, setToModify }: Props) {
+function ModifyButton({ obj }: Props) {
+  const taskContext = useContext(TaskContext);
+  if (!taskContext) {
+    throw new Error("TaskContext must be used within a TaskContextProvider");
+  }
+  const { setTask, setToModify, setShowModal } = taskContext;
+
   const handleModify: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     const { value } = e.currentTarget as HTMLButtonElement;
     const modifiedTask: Task = JSON.parse(value);
