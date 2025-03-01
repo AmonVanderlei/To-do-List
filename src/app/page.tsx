@@ -95,7 +95,7 @@ export default function Home() {
               >
                 <li>
                   <a
-                    href="https://github.com/AmonVanderlei/To-do-List"
+                    href="https://github.com/AmonVanderlei/habit-maker"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex gap-2"

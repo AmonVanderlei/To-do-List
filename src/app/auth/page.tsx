@@ -59,7 +59,7 @@ export default function Auth() {
       {/* Credits */}
       <div className="flex flex-col w-11/12 text-sm">
         <a
-          href="https://github.com/AmonVanderlei/To-do-List"
+          href="https://github.com/AmonVanderlei/habit-maker"
           target="_blank"
           rel="noopener noreferrer"
           className="flex gap-1"
