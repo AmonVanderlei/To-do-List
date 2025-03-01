@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Habit Maker
 
-## Getting Started
+#### Build new habits and stay on track with your goals.
 
-First, run the development server:
+<p align="center">  
+<img src="public/icons/android-chrome-512x512.png" width="150"/></br>  
+</p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+<p align="center">  
+<a href="#about-memo">About</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;  
+<a href="#features-sparkles">Features</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;  
+<a href="#how-to-contribute-🤔">How to Contribute</a>&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;  
+<a href="#license-scroll">License</a>  
+</p>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<p align="center">  
+<img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/AmonVanderlei/habit-maker" />  
+<img alt="Github License" src="https://img.shields.io/github/license/AmonVanderlei/habit-maker" />  
+<img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/AmonVanderlei/habit-maker">  
+<img alt="GitHub Repo Size" src="https://img.shields.io/github/repo-size/AmonVanderlei/habit-maker" />  
+<img alt="GitHub Issues" src="https://img.shields.io/github/issues/AmonVanderlei/habit-maker" />  
+<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/AmonVanderlei/habit-maker" />  
+</p>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Read Portuguese version [HERE](README-pt-br.md)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## About :memo:
 
-## Learn More
+Habit Maker is an intuitive app designed to help you develop and maintain new habits. With features for tracking daily progress, setting reminders, and managing personal goals, it empowers users to create positive routines and improve productivity.
 
-To learn more about Next.js, take a look at the following resources:
+## Features :sparkles:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Create and track daily habits.
+- Set custom reminders for each habit.
+- View habit streaks and progress analytics.
+- Organize habits by priority and category.
+- Secure authentication using Firebase.
+- Progressive Web App (PWA) for an app-like experience.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## How to Contribute 🤔
 
-## Deploy on Vercel
+1. Fork this repository;
+2. Create a branch with your feature: `git checkout -b my-feature`;
+3. Commit your changes: `git commit -m 'feat: my new feature'`;
+4. Push to your branch: `git push origin my-feature`;
+5. Create a new Pull Request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License :scroll:
+
+> This project is under the MIT license. See the archive [LICENSE](LICENSE) for more details.
+
+---
+
+##### Made by Amon Vanderlei :wave:
