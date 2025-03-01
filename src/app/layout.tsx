@@ -9,7 +9,44 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Habit Maker",
-  description: "Write your goals to create new habits.",
+  description: "Organize and track your daily habits to build a better routine.",
+  applicationName: "Habit Maker",
+  authors: [
+    { name: "Amon Vanderlei", url: "https://github.com/AmonVanderlei" },
+  ],
+  creator: "Amon Vanderlei",
+  keywords: ["Habits", "Routine", "Planning", "Tasks", "To-do", "Productivity"],
+  category: "productivity",
+  themeColor: "#010414",
+  colorScheme: "dark",
+  openGraph: {
+    title: "Habit Maker",
+    description:
+      "Habit Maker is an intuitive app designed to help you track and develop new habits. Set goals, track progress, and build a productive routine.",
+    url: "https://habit-maker-amonvanderlei.vercel.app/",
+    type: "website",
+    images: [
+      {
+        url: "https://habit-maker-amonvanderlei.vercel.app/icons/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Habit Maker - Track and build better habits",
+      },
+    ],
+  },
+  icons: {
+    icon: [
+      { rel: "icon", url: "/favicon.ico" },
+      { rel: "icon", sizes: "16x16", url: "/icons/favicon-16x16.png" },
+      { rel: "icon", sizes: "32x32", url: "/icons/favicon-32x32.png" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
+  viewport: "width=device-width, initial-scale=1.0",
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
