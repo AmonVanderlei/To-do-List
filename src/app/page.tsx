@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LiaInfoSolid } from "react-icons/lia";
 import { VscSignOut } from "react-icons/vsc";
+import Loading from "@/components/Loading";
 
 export default function Home() {
   const taskContext = useContext(TaskContext);
@@ -59,8 +60,8 @@ export default function Home() {
 
   if (loading || !user) {
     return (
-      <div className="grow w-full h-full flex items-center justify-center">
-        <p className="text-xl">Loading...</p>
+      <div className="absolute top-1/2 left-[47%]">
+        <Loading />
       </div>
     );
   }

@@ -88,7 +88,11 @@ export default function TaskContextProvider({ children }: Props) {
     // Take all the tasks from firebase
     const fetchData = async () => {
       try {
-        const tasksData = await getDocuments("tasks", user.uid);
+        const tasksData = await toast.promise(getDocuments("tasks", user.uid), {
+          pending: "Loading tasks...",
+          success: "Task successfully loaded!",
+          error: "Sorry! Something wrong happened.",
+        });
 
         setTasks(sortTasks(tasksData));
       } catch (error) {
@@ -161,20 +165,7 @@ export default function TaskContextProvider({ children }: Props) {
   function CustomNotification({ closeToast }: ToastContentProps) {
     return (
       <div className="flex flex-col items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="stroke-current shrink-0 h-20 w-20 text-error"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-        <h1 className="text-4xl my-4">Are you sure?</h1>
+        <h1 className="text-xl my-4 text-error">Are you sure?</h1>
         <p className="text-center mb-4">
           Do you really want to delete this task? It can&apos;t be undone.
         </p>

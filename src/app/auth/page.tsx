@@ -39,7 +39,7 @@ export default function Auth() {
           alt="Logo"
           width={512}
           height={512}
-          className="max-w-40 rounded-full border-4 border-slate-900"
+          className="max-w-40 rounded-full"
         />
         <div>
           <h1 className="text-2xl">Habit Maker</h1>
